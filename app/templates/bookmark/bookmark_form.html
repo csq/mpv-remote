@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>{% if edit_mode %}Edit{% else %}Create{% endif %} bookmark</title>
+{% endblock %}
+
+{% block head_content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/pages/bookmark/bookmark_form.css') }}">
+{% endblock %}
+
+{% block body_content %}
+<h1>{% if edit_mode %}Edit{% else %}Create{% endif %} bookmark</h1>
+<button type="button" onclick="go_to_back()">
+            <i class="icon fas fa-angle-left"></i>Back
+</button>
+<div class="form-container">
+    <form action="{% if edit_mode %}/bookmark/edit/{{ bookmark[0] }}{% else %}/bookmark/add{% endif %}" method="POST">
+        {% if edit_mode %}
+        <input type="hidden" name="bookmark_id" value="{{ bookmark[0] }}">
+        {% endif %}
+        <input type="text" 
+            id="nameInput" 
+            name="name" 
+            placeholder="Bookmark Name"
+            required 
+            value="{% if edit_mode %}{{ bookmark[1] }}{% endif %}">
+
+        <input type="url" 
+            id="urlInput" 
+            name="url" 
+            placeholder="URL Stream" 
+            required 
+            value="{% if edit_mode %}{{ bookmark[2] }}{% endif %}">
+
+        <button type="submit" class="btn btn-success">
+            <i class="fas fa-paper-plane"></i> 
+            {% if edit_mode %}Update{% else %}Submit{% endif %}
+        </button>
+    </form>
+</div>
+<script>
+    function go_to_back() {
+        window.location.href = '/bookmark';
+    }
+</script>
+{% endblock %}

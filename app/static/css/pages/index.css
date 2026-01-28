@@ -1,0 +1,134 @@
+#url-form-container {
+    align-items: center;
+    margin-top: 10%;
+}
+
+#control-buttons {
+    margin-top: 50px;
+    color: #ffffff;
+    font-size: 16px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+input[type="url"] {
+    width: 90%;
+    max-width: 400px;
+    padding: 10px;
+    border: none;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    font-size: 16px;
+    outline: none;
+}
+
+input[type="url"]::placeholder {
+    color: #cccccc;
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #ff5722;
+    border: none;
+    border-radius: 5px;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:active {
+    transform: translateY(2px);
+}
+
+#btn-submit {
+    background-color: #ff5722;
+    color: #ffffff;
+    border: none;
+    padding: 10px 15px;
+    margin: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#control-buttons {
+    margin-top: 50px;
+    color: #ffffff;
+    font-size: 16px;
+}
+
+#control-buttons button {
+    margin-right: 10px;
+    color: #1e1e1e;
+    background-color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 20px;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+    margin-bottom: 10px;
+}
+
+#control-buttons button:hover {
+    background-color: #f2f2f2;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#control-buttons button:active {
+    background-color: #cccccc;
+    box-shadow: #f2f2f2;
+    transform: translateY(2px);
+}
+
+.row {
+    display: block;
+    width: 80%;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+#playlist {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    color: #ffffff;
+    font-size: 16px;
+}
+
+#playlist table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+#playlist table:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#playlist table th, #playlist table td {
+    padding: 10px;
+    border: 1px solid #333;
+    border-bottom: 1px solid #333;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 600px) {
+    #url-form-container {
+        margin-top: 40%;
+    }
+}

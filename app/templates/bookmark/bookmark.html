@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Bookmarks</title>
+{% endblock %}
+
+{% block head_content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/pages/bookmark/bookmark.css') }}">
+{% endblock %}
+
+{% block body_content %}
+<h1>Bookmarks</h1>
+<button onclick="go_to_back()"><i class="icon fas fa-angle-left"></i>Back</button>
+<button onclick="redirect_to_add_bookmark()" class="btn btn-success btn-sm">Add Bookmark <i class="fas fa-bookmark"></i></button>
+<table id="bookmarkTable">
+    <thead>
+        <tr>
+            <th>NAME</th>
+            <th class="stream-url">STREAM URL</th>
+            <th>ACTIONS</th>
+        </tr>
+    </thead>
+    <tbody id="bookmarkList">
+        {% for item in data %}    
+            <tr>              
+                <td class="stream-name">{{ item[1] }}</td>
+                <td class="stream-url">{{ item[2] }}</td>
+                <td>
+                    <div class="bookmark-item" data-bookmark-id="{{ item[0] }}">
+                        <button onclick="confirm_remove_bookmark('{{ item[0] }}');" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                        <button onclick="edit_bookmark('{{ item[0] }}')" class="btn btn-warning btn-sm"><i class="fas fa-pencil-alt"></i></button>
+                        <button onclick="play_bookmark('{{ item[2] }}');" class="btn btn-primary btn-sm"><i class="fas fa-play"></i></button>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<script>
+    function go_to_back() {
+        window.location.href = '/';
+    }
+
+    function redirect_to_add_bookmark() {
+        window.location.href = '/bookmark/add';
+    }
+
+    function remove_bookmark(bookmark_id) {
+        fetch(`/bookmark/delete/${bookmark_id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            console.log('bookmark removed successfully');
+            return response.json();
+        })
+        .then(data => {
+            const bookmarkItem = document.querySelector(`tr [data-bookmark-id="${bookmark_id}"]`).closest('tr');
+            if (bookmarkItem) {
+                bookmarkItem.remove();
+            }
+        })
+        .catch(error => {
+            console.error('Error removing bookmark:', error);
+        });
+    }
+
+    function confirm_remove_bookmark(bookmark_id) {
+        if (confirm("Are you sure you want to remove this bookmark?")) {
+            remove_bookmark(bookmark_id);
+        } else {
+            console.log("bookmark removal cancelled.");
+        }
+    }
+
+    function edit_bookmark(bookmark_id) {
+        window.location.href = `/bookmark/edit/${bookmark_id}`;
+    }
+
+    function play_bookmark(url) {
+        const encodedUrl = encodeURIComponent(url);
+
+        fetch(`/bookmark/play/${encodedUrl}`, { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('bookmark play successful:', data);
+        })
+        .catch(error => {
+            console.error('Error playing bookmark:', error);
+        });
+    }
+</script>
+{% endblock %}

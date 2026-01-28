@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>MPV Remote</title>
+{% endblock %}
+
+{% block head_content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/pages/index.css') }}">
+</style>
+{% endblock %}
+
+{% block body_content %}
+<div id="url-form-container">
+    <h2>MPV Remote</h2>
+    <form id="urlForm" action="/playing" method="POST">
+        <input type="url" id="urlInput" name="url" placeholder="Paste link from YouTube Music, Bandcamp, etc." required>
+        <button type="submit" id="btn-submit"><i class="fas fa-paper-plane"></i> Submit</button>
+    </form>
+</div>
+
+<div class="container">
+    <div id="control-buttons">
+        <row class="row">
+            <button onclick="control('pause')" id="btn-pause"><i class="icon fas fa-pause"></i>Pause</button>
+            <button onclick="control('stop');"><i class="icon fas fa-stop"></i>Stop</button>
+            <button onclick="control('vol_plus')"><i class="icon fas fa-volume-up"></i>Vol +</button>
+            <button onclick="control('mute')" id="btn-mute"><i class="icon fas fa-volume-mute"></i>Mute</button>
+            <button onclick="control('vol_minus')"><i class="icon fas fa-volume-down"></i>Vol -</button>
+        </row>
+        <row class="row">
+            <button onclick="control('previous')"><i class="icon fas fa-backward"></i>Prev</button>
+            <button onclick="control('next')"><i class="icon fas fa-forward"></i>Next</button>
+        </row>
+        <row class="row">
+        <button onclick="control('repeat_playlist')" id="btn-repeat"><i class="icon fas fa-repeat"></i>Repeat</button>
+        <button onclick="show_playlist()" id="btn-playlist"><i class="icon fas fa-list"></i>Playlist</button>
+        </row>
+        <row class="row">
+            <button onclick="got_to_bookmark()"><i class="icon fas fa-bookmark"></i></button>
+            <button onclick="go_to_radio()"><i class="icon fas fa-radio"></i></button>
+        </row>
+    </div>
+    <div id="playlist">
+        <h2>Playlist</h2>
+        <table id="playlistTable" class="table table-dark">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>NAME</th>
+                    <th>SOURCE</th>
+                </tr>
+            </thead>
+            <tbody id="playlistList">
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    var btn_pressed_mute = false;
+    var btn_pressed_mute = false;
+    var btn_pressed_pause = false;
+    var btn_pressed_repeat = false;
+    var btn_pressed_playlist = false;
+
+    document.getElementById('urlForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        // Get the URL from the input
+        const url = document.getElementById('urlInput').value;
+        
+        // Send the URL to the server
+        fetch('/playing', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `url=${encodeURIComponent(url)}`
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('URL sent successfully');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+
+    function control(action) {
+        const btn_color_active = "grey";
+
+        if (action == 'stop') {
+            document.getElementById('playlist').style.display = 'none';
+        }
+        else if (action == 'repeat_playlist') {
+            btn_pressed_repeat = !btn_pressed_repeat
+            const repeat_button = document.getElementById('btn-repeat');
+            repeat_button.style.backgroundColor = btn_pressed_repeat ? btn_color_active : '#ffffff';
+        }
+        else if (action == 'mute') {
+            btn_pressed_mute = !btn_pressed_mute;
+            const mute_button = document.getElementById('btn-mute');
+            mute_button.style.backgroundColor = btn_pressed_mute ? btn_color_active : '#ffffff';
+        }
+        else if (action == 'pause') {
+            btn_pressed_pause = !btn_pressed_pause;
+            const pause_button = document.getElementById('btn-pause');
+            pause_button.style.backgroundColor = btn_pressed_pause ? btn_color_active : '#ffffff';
+        }
+        fetch(`/control/${action}`, { method: 'POST' })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
+    }
+
+    function go_to_radio() {
+        window.location.href = '/radio';
+    }
+
+    function got_to_bookmark() {
+        window.location.href = '/bookmark';
+    }
+
+    function show_playlist() {
+        btn_pressed_playlist = !btn_pressed_playlist;
+
+        const playlist_button = document.getElementById('btn-playlist');
+        playlist_button.style.backgroundColor = btn_pressed_playlist ? 'grey' : '#ffffff';
+
+        if (!btn_pressed_playlist) {
+            document.getElementById('playlist').style.display = 'none';
+        }
+        else{
+            fetch('/playlist', { method: 'GET' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length == 0) {
+                        document.getElementById('playlist').style.display = 'none';
+                    }
+                    else{
+                        document.getElementById('playlist').style.display = 'block';
+                        const tableBody = document.getElementById('playlistList');
+                        // Clear existing rows
+                        tableBody.innerHTML = '';
+                        
+                        // Populate table with new data
+                        var index = 1;
+                        data.forEach(item => {
+                            const row = `
+                                <tr>
+                                    <td>${index++}</td>
+                                    <td>${item.title}</td>
+                                    <td>${item.filename}</td>
+                                </tr>
+                            `;
+                            tableBody.innerHTML += row;
+                        })
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                }
+            );
+        }
+    }
+
+</script>
+{% endblock %}

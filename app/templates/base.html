@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% block title %}{% endblock %}
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='fontawesome/css/all.min.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}">
+        <script src="{{ url_for('static', filename='fontawesome/js/all.min.js') }}"></script>
+        {% block head_content %}{% endblock %}
+    </head>
+    <body>
+        <div class="container">
+            {% block body_content %}{% endblock %}
+        </div>
+    </body>
+</html>

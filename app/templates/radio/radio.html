@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Radio</title>
+{% endblock %}
+
+{% block head_content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/pages/radio/radio.css') }}">
+{% endblock %}
+
+{% block body_content %}
+<h1>Radio</h1>
+<button onclick="go_to_back()"><i class="icon fas fa-angle-left"></i>Back</button>
+<button onclick="redirect_to_add_radio()" class="btn btn-success btn-sm">Add Radio <i class="fas fa-radio"></i></button>
+<table id="radioTable">
+    <thead>
+        <tr>
+            <th>NAME</th>
+            <th class="stream-url">STREAM URL</th>
+            <th>ACTIONS</th>
+        </tr>
+    </thead>
+    <tbody id="radioList">
+        {% for item in data %}    
+            <tr>              
+                <td>{{ item[1] }}</td>
+                <td class="stream-url">{{ item[2] }}</td>
+                <td>
+                    <div class="radio-item" data-radio-id="{{ item[0] }}">
+                        <button onclick="confirm_remove_radio('{{ item[0] }}');" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                        <button onclick="edit_radio('{{ item[0] }}')" class="btn btn-warning btn-sm"><i class="fas fa-pencil-alt"></i></button>
+                        <button onclick="play_radio('{{ item[2] }}');" class="btn btn-primary btn-sm"><i class="fas fa-play"></i></button>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<script>
+    function go_to_back() {
+        window.location.href = '/';
+    }
+
+    function redirect_to_add_radio() {
+        window.location.href = '/radio/add';
+    }
+
+    function remove_radio(radio_id) {
+        fetch(`/radio/delete/${radio_id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            console.log('Radio removed successfully');
+            return response.json();
+        })
+        .then(data => {
+            const radioItem = document.querySelector(`tr [data-radio-id="${radio_id}"]`).closest('tr');
+            if (radioItem) {
+                radioItem.remove();
+            }
+        })
+        .catch(error => {
+            console.error('Error removing radio:', error);
+        });
+    }
+
+    function confirm_remove_radio(radio_id) {
+        if (confirm("Are you sure you want to remove this radio?")) {
+            remove_radio(radio_id);
+        } else {
+            console.log("Radio removal cancelled.");
+        }
+    }
+
+    function edit_radio(radio_id) {
+        window.location.href = `/radio/edit/${radio_id}`;
+    }
+
+    function play_radio(url) {
+        const encodedUrl = encodeURIComponent(url);
+
+        fetch(`/radio/play/${encodedUrl}`, { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Radio play successful:', data);
+        })
+        .catch(error => {
+            console.error('Error playing radio:', error);
+        });
+    }
+</script>
+{% endblock %}

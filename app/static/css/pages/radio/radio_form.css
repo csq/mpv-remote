@@ -1,0 +1,34 @@
+button {
+    background-color: #333333;
+    color: #ffffff;
+    border: none;
+    padding: 10px 15px;
+    margin: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.form-container {
+    width: 40%;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.form-container input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 90%;
+    margin-bottom: 10px;
+}
+
+.form-container button {
+    background-color: #28a745;
+}
+
+@media (max-width: 600px) {
+    .form-container {
+        width: 80%;
+    }
+}

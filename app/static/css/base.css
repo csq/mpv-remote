@@ -1,0 +1,74 @@
+body {
+    display: block;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #121212;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    margin: 0 auto;
+    max-width: 90%;
+    padding: 20px;
+    text-align: center;
+}
+
+button {
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #333333;
+    color: #ffffff;
+    border: none;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+
+button:hover { 
+    background-color: #555555;
+}
+
+button:active { 
+    background-color: #777777;
+    transform: translateY(2px);
+}
+
+.btn {
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-sm {
+    padding: 5px 10px;
+    font-size: 15px;
+}
+
+.btn-success {
+    background-color: #28a745;
+    color: #fff;
+    border-color: #28a745;
+    padding: 10px 15px;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+    border-color: #dc3545;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    color: #fff;
+    border-color: #ffc107;
+}
+
+.btn.primary {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
