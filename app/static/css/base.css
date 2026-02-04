@@ -72,3 +72,73 @@ button:active {
     color: #fff;
     border-color: #007bff;
 }
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal.is-visible {
+    opacity: 1;
+    visibility: visible;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 2%;
+}
+
+.modal-content {
+    background-color: #333333;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    max-height: fit-content;
+    width: 90%;
+    position: relative;
+    transform: scale(0.7);
+    opacity: 0;
+    transition: all 0.3s ease;
+    overflow-wrap: break-word;
+    padding: 20px;
+    color: #ffffff;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: medium;
+}
+
+.modal.is-visible .modal-content {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 24px;
+    color: #888;
+    transition: color 0.2s ease;
+}
+
+.modal-close:hover {
+    color: #000;
+}
+
+@media (max-width: 600px) {
+    .modal-content {
+        max-width: 70%;
+        max-height: fit-content;
+        padding: fit-content;
+        font-size: small;
+    }
+}

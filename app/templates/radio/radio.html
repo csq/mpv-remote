@@ -29,7 +29,7 @@
                     <div class="radio-item" data-radio-id="{{ item[0] }}">
                         <button onclick="confirm_remove_radio('{{ item[0] }}');" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
                         <button onclick="edit_radio('{{ item[0] }}')" class="btn btn-warning btn-sm"><i class="fas fa-pencil-alt"></i></button>
-                        <button onclick="play_radio('{{ item[2] }}');" class="btn btn-primary btn-sm"><i class="fas fa-play"></i></button>
+                        <button onclick="play_radio('{{ item[1] }}', '{{ item[2] }}');" class="btn btn-primary btn-sm"><i class="fas fa-play"></i></button>
                     </div>
                 </td>
             </tr>
@@ -82,8 +82,11 @@
         window.location.href = `/radio/edit/${radio_id}`;
     }
 
-    function play_radio(url) {
+    function play_radio(name, url) {
         const encodedUrl = encodeURIComponent(url);
+
+        openModal("Playing radio: " + name);
+        closeModal(1000);
 
         fetch(`/radio/play/${encodedUrl}`, { 
             method: 'POST',

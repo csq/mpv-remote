@@ -68,7 +68,14 @@
         
         // Get the URL from the input
         const url = document.getElementById('urlInput').value;
-        
+
+        // Clear the input
+        document.getElementById('urlInput').value = '';
+
+        // Modal stuff
+        openModal("Playing: " + url);
+        closeModal(3000);
+
         // Send the URL to the server
         fetch('/playing', {
             method: 'POST',

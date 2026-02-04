@@ -12,7 +12,44 @@
     </head>
     <body>
         <div class="container">
+            <div id="modal" class="modal">
+                <div class="modal-content">
+                    <span class="modal-close">&times;</span>
+                    <p id="modal-message"></p>
+                </div>
+            </div>
             {% block body_content %}{% endblock %}
         </div>
     </body>
 </html>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const modal = document.getElementById('modal');
+        const modalClose = modal.querySelector('.modal-close');
+
+        function openModal(message) {
+            const modalMessage = document.getElementById('modal-message');
+            modalMessage.textContent = message;
+            modal.classList.add('is-visible');
+        }
+
+        function closeModal(lapseTime = 2000) {
+            setTimeout (() => {
+                modal.classList.remove('is-visible');
+            }, lapseTime);
+        }
+
+        modalClose.addEventListener('click', closeModal);
+
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Expose functions to the global scope
+        window.openModal = openModal;
+        window.closeModal = closeModal;
+    });
+</script>

@@ -29,7 +29,7 @@
                     <div class="bookmark-item" data-bookmark-id="{{ item[0] }}">
                         <button onclick="confirm_remove_bookmark('{{ item[0] }}');" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
                         <button onclick="edit_bookmark('{{ item[0] }}')" class="btn btn-warning btn-sm"><i class="fas fa-pencil-alt"></i></button>
-                        <button onclick="play_bookmark('{{ item[2] }}');" class="btn btn-primary btn-sm"><i class="fas fa-play"></i></button>
+                        <button onclick="play_bookmark('{{ item[1] }}', '{{ item[2] }}');" class="btn btn-primary btn-sm"><i class="fas fa-play"></i></button>
                     </div>
                 </td>
             </tr>
@@ -82,8 +82,11 @@
         window.location.href = `/bookmark/edit/${bookmark_id}`;
     }
 
-    function play_bookmark(url) {
+    function play_bookmark(name, url) {
         const encodedUrl = encodeURIComponent(url);
+
+        openModal("Playing bookmark: " + name);
+        closeModal(1000);
 
         fetch(`/bookmark/play/${encodedUrl}`, { 
             method: 'POST',
