@@ -42,12 +42,12 @@
     </div>
     <div id="playlist">
         <h2>Playlist</h2>
-        <table id="playlistTable" class="table table-dark">
+        <table id="playlistTable">
             <thead>
                 <tr>
                     <th>#</th>
                     <th>NAME</th>
-                    <th>SOURCE</th>
+                    <th class="stream-url">SOURCE</th>
                 </tr>
             </thead>
             <tbody id="playlistList">
@@ -158,7 +158,7 @@
                                 <tr>
                                     <td>${index++}</td>
                                     <td>${item.title}</td>
-                                    <td>${item.filename}</td>
+                                    <td class="stream-url">${item.filename}</td>
                                 </tr>
                             `;
                             tableBody.innerHTML += row;

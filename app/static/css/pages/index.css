@@ -132,3 +132,26 @@ button:active {
         margin-top: 40%;
     }
 }
+
+@media (max-width: 900px) {
+    #playlistList tr td:nth-child(2) {
+        max-width: 100px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .stream-url {
+        display: none;
+    }
+}
+
+@media (max-width: 900px) and (orientation: landscape) {
+    .row {
+        width: 85%;
+    }
+
+    .stream-url {
+        display: block;
+    }
+}
