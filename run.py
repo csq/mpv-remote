@@ -49,11 +49,11 @@ def control(action):
 
     elif action == 'vol_plus':
         current_volume = get_volume()
-        new_volume = min(current_volume + 10, 100)
+        new_volume = min(current_volume + 5, 100)
         command = { "command": ["set_property", "volume", str(new_volume)] }
     elif action == 'vol_minus':
         current_volume = get_volume()
-        new_volume = max(current_volume - 10, 0)
+        new_volume = max(current_volume - 5, 0)
         command = { "command": ["set_property", "volume", str(new_volume)] }
 
     elif action == 'mute':
