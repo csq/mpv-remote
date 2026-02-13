@@ -12,6 +12,10 @@
     </head>
     <body>
         <div class="container">
+            <div id="media-display">
+                <p id="media-title"></p>
+            </div>
+
             <div id="modal" class="modal">
                 <div class="modal-content">
                     <span class="modal-close">&times;</span>
@@ -52,4 +56,37 @@
         window.openModal = openModal;
         window.closeModal = closeModal;
     });
+
+    function updateMediaInfo() {
+        if (document.visibilityState === 'visible') {
+            fetch('/media-info')
+                .then(response => response.json())
+                .then(data => {
+                    const mediaDisplay = document.getElementById('media-display');
+                    const mediaTitleElement = document.getElementById('media-title');
+
+                    if (data.is_playing) {
+                        const title = data.title;
+                        const metadata = data.metadata;
+                        const mediaTitle = `${metadata} - ${title}`;
+
+                        if (title.includes(metadata)) {
+                            mediaTitleElement.textContent = title;
+                        } else {
+                            mediaTitleElement.textContent = mediaTitle;
+                        }
+                        mediaDisplay.style.display = 'block';
+                    } else {
+                        mediaDisplay.style.display = 'none';
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    }
+
+    // Update media info every 2 seconds
+    setInterval(updateMediaInfo, 2000);
+
+    // Initial update
+    updateMediaInfo();
 </script>

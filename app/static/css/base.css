@@ -16,6 +16,37 @@ body {
     text-align: center;
 }
 
+/* Media display container */
+#media-display {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+}
+
+/* Marquee effect for the media title */
+#media-title {
+    width: 90%;
+    overflow: hidden;
+    margin: 0;
+    text-align: center;
+    display: inline-block;
+    white-space: nowrap;
+    animation: marquee 20s linear infinite;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-size: 15px;
+    color: #ffffff;
+}
+
+/* Animation for the marquee effect */
+@keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
 button {
     align-items: center;
     padding: 10px 15px;

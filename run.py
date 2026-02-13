@@ -195,6 +195,41 @@ def get_playlist():
 
     return jsonify(json.loads(response)['data'])
 
+@app.route('/media-info')
+def get_media_info():
+    global ipc_path
+
+    # Command to check if media is playing
+    playing_command = {"command": ["get_property", "core-idle"]}
+    playing_response = send_mpv_command(ipc_path, playing_command)
+
+    # Command to get media title
+    title_command = {"command": ["get_property", "media-title"]}
+    title_response = send_mpv_command(ipc_path, title_command)
+
+    # Command to get metadata
+    metadata_command = {"command": ["get_property", "filtered-metadata"]}
+    metadata_response = send_mpv_command(ipc_path, metadata_command)
+
+    # Check if media is playing (core-idle is false when playing)
+    if (json.loads(playing_response)['data'] == False):
+        is_playing = json.loads(playing_response)['data'] == False
+        title = json.loads(title_response)['data']
+        metadata = json.loads(metadata_response)['data']['Uploader'] if 'Uploader' in json.loads(metadata_response)['data'] else ''
+        if ' - Topic' in metadata:
+            metadata = metadata.replace(' - Topic', '').strip()
+
+        return jsonify({
+            'is_playing': is_playing,
+            'title': title,
+            'metadata': metadata
+        })
+
+    return jsonify({
+        "is_playing": False,
+        "title": None
+    })
+
 def page_not_found(error):
     return redirect(url_for('index'))
 
