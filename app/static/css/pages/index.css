@@ -30,9 +30,8 @@ input[type="url"]::placeholder {
 
 button {
     padding: 10px 15px;
-    background-color: #ff5722;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     color: #ffffff;
     font-size: 16px;
     cursor: pointer;

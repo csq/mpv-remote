@@ -48,6 +48,7 @@
                     <th>#</th>
                     <th>NAME</th>
                     <th class="stream-url">SOURCE</th>
+                    <th>ACTIONS</th>
                 </tr>
             </thead>
             <tbody id="playlistList">
@@ -159,6 +160,12 @@
                                     <td>${index++}</td>
                                     <td>${item.title}</td>
                                     <td class="stream-url">${item.filename}</td>
+                                    <td>
+                                        <div class="playlist-item" data-playlist-id="${item.id}">
+                                            <button onclick="delete_item_from_playlist('${index - 2}');" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                            <button onclick="play_item_from_playlist('${index - 2}', '${item.title}');" class="btn btn-primary btn-sm"><i class="fas fa-play"></i></button>
+                                        </div>
+                                    </td>
                                 </tr>
                             `;
                             tableBody.innerHTML += row;
@@ -170,6 +177,30 @@
                 }
             );
         }
+    }
+
+    function play_item_from_playlist(index, title) {
+        fetch(`/playlist/play/${index}`, { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                if (data == 'success') {
+                    openModal("Playing: " + title);
+                    closeModal(3000);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function delete_item_from_playlist(index) {
+        fetch(`/playlist/delete/${index}`, { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                if (data == 'success') {
+                    btn_pressed_playlist = false;
+                    show_playlist();
+                }
+            })
+            .catch(error => console.error('Error:', error));
     }
 
 </script>

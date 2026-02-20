@@ -195,6 +195,24 @@ def get_playlist():
 
     return jsonify(json.loads(response)['data'])
 
+@app.route('/playlist/play/<int:index>', methods=['POST'])
+def play_item_from_playlist(index):
+    global ipc_path
+
+    command = { "command": ["playlist-play-index", str(index)] }
+    response = send_mpv_command(ipc_path, command)
+
+    return jsonify(json.loads(response)['error'])
+
+@app.route('/playlist/delete/<int:index>', methods=['POST'])
+def delete_item_from_playlist(index):
+    global ipc_path
+
+    command = { "command": ["playlist-remove", str(index)] }
+    response = send_mpv_command(ipc_path, command)
+
+    return jsonify(json.loads(response)['error'])
+
 @app.route('/media-info')
 def get_media_info():
     global ipc_path
