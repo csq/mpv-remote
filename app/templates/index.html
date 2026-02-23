@@ -146,12 +146,16 @@
                             const row = `
                                 <tr>
                                     <td>${index++}</td>
-                                    <td>${item.title}</td>
+                                    <td>${item.title ? item.title : 'Unknown'}</td>
                                     <td class="stream-url">${item.filename}</td>
                                     <td>
                                         <div class="playlist-item" data-playlist-id="${item.id}">
-                                            <button onclick="delete_item_from_playlist('${index - 2}');" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                                            <button onclick="play_item_from_playlist('${index - 2}', '${item.title.replace(/'/g, "\\'")}')" class="btn btn-primary btn-sm"><i class="fas fa-play"></i></button>
+                                            <button onclick="delete_item_from_playlist('${index - 2}');" class="btn btn-danger btn-sm">
+                                                <i class="fas fa-trash">
+                                            </i></button>
+                                            <button onclick="play_item_from_playlist('${ index - 2 }', '${item.title ? item.title.replace(/'/g, "\\'") : 'Unknown'}')" class="btn btn-primary btn-sm">
+                                                <i class="fas fa-play"></i>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
