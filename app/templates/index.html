@@ -21,10 +21,10 @@
 <div class="container">
     <div id="control-buttons">
         <row class="row">
-            <button onclick="control('pause')" id="btn-pause"><i class="icon fas fa-pause"></i>Pause</button>
+            <button onclick="control('pause')" id="btn-pause" class="{% if btn_states.pause %}active{% endif %}"><i class="icon fas fa-pause"></i>Pause</button>
             <button onclick="control('stop');"><i class="icon fas fa-stop"></i>Stop</button>
             <button onclick="control('vol_plus')"><i class="icon fas fa-volume-up"></i>Vol +</button>
-            <button onclick="control('mute')" id="btn-mute"><i class="icon fas fa-volume-mute"></i>Mute</button>
+            <button onclick="control('mute')" id="btn-mute" class="{% if btn_states.mute %}active{% endif %}"><i class="icon fas fa-volume-mute"></i>Mute</button>
             <button onclick="control('vol_minus')"><i class="icon fas fa-volume-down"></i>Vol -</button>
         </row>
         <row class="row">
@@ -32,7 +32,7 @@
             <button onclick="control('next')"><i class="icon fas fa-forward"></i>Next</button>
         </row>
         <row class="row">
-            <button onclick="control('repeat_playlist')" id="btn-repeat"><i class="icon fas fa-repeat"></i>Repeat</button>
+            <button onclick="control('repeat')" id="btn-repeat" class="{% if btn_states.repeat %}active{% endif %}"><i class="icon fas fa-repeat"></i>Repeat</button>
             <button onclick="show_playlist()" id="btn-playlist"><i class="icon fas fa-list"></i>Playlist</button>
         </row>
         <row class="row">
@@ -58,10 +58,11 @@
 </div>
 
 <script>
-    var btn_pressed_mute = false;
-    var btn_pressed_mute = false;
-    var btn_pressed_pause = false;
-    var btn_pressed_repeat = false;
+    const btn_state = JSON.parse('{{ btn_states | tojson }}');
+
+    var btn_pressed_mute = btn_state.mute
+    var btn_pressed_pause = btn_state.pause;
+    var btn_pressed_repeat = btn_state.repeat;
     var btn_pressed_playlist = false;
 
     document.getElementById('urlForm').addEventListener('submit', function(event) {
@@ -96,30 +97,17 @@
     });
 
     function control(action) {
-        const btn_color_active = "grey";
-
-        if (action == 'stop') {
-            document.getElementById('playlist').style.display = 'none';
-        }
-        else if (action == 'repeat_playlist') {
-            btn_pressed_repeat = !btn_pressed_repeat
-            const repeat_button = document.getElementById('btn-repeat');
-            repeat_button.style.backgroundColor = btn_pressed_repeat ? btn_color_active : '#ffffff';
-        }
-        else if (action == 'mute') {
-            btn_pressed_mute = !btn_pressed_mute;
-            const mute_button = document.getElementById('btn-mute');
-            mute_button.style.backgroundColor = btn_pressed_mute ? btn_color_active : '#ffffff';
-        }
-        else if (action == 'pause') {
-            btn_pressed_pause = !btn_pressed_pause;
-            const pause_button = document.getElementById('btn-pause');
-            pause_button.style.backgroundColor = btn_pressed_pause ? btn_color_active : '#ffffff';
-        }
         fetch(`/control/${action}`, { method: 'POST' })
             .then(response => response.json())
             .then(data => console.log(data))
             .catch(error => console.error('Error:', error));
+
+        const variableName = `btn_pressed_${action}`;
+
+        const button = document.getElementById(`btn-${action}`);
+        button.classList.toggle('active');
+
+        window[variableName] = !window[variableName];
     }
 
     function go_to_radio() {
@@ -134,7 +122,7 @@
         btn_pressed_playlist = !btn_pressed_playlist;
 
         const playlist_button = document.getElementById('btn-playlist');
-        playlist_button.style.backgroundColor = btn_pressed_playlist ? 'grey' : '#ffffff';
+        playlist_button.classList.toggle('active');
 
         if (!btn_pressed_playlist) {
             document.getElementById('playlist').style.display = 'none';

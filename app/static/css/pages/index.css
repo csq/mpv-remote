@@ -85,6 +85,10 @@ button:active {
     transform: translateY(2px);
 }
 
+#control-buttons button.active {
+    background-color: grey;
+}
+
 .row {
     display: block;
     width: 80%;

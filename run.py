@@ -22,7 +22,30 @@ ipc_path = args.ipc_path
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    global ipc_path
+
+    # states False = unpaused, True = paused
+    cmd_state = { "command": ["get_property", "pause"] }
+    response = send_mpv_command(ipc_path, cmd_state)
+    btn_pause_state = json.loads(response)['data']
+
+    # states False = unmuted, True = muted
+    cmd_state = { "command": ["get_property", "mute"] }
+    response = send_mpv_command(ipc_path, cmd_state)
+    btn_mute_state = json.loads(response)['data']
+
+    # states False = no repeat, inf = repeat
+    cmd_state = { "command": ["get_property", "loop-playlist"] }
+    response = send_mpv_command(ipc_path, cmd_state)
+    btn_repeat_state = json.loads(response)['data']
+
+    btn_states = {
+        "pause": btn_pause_state,
+        "mute": btn_mute_state,
+        "repeat": btn_repeat_state
+    }
+
+    return render_template('index.html', btn_states=btn_states)
 
 @app.route('/playing', methods=['POST'])
 def playing():
@@ -62,7 +85,7 @@ def control(action):
     elif action == 'stop':
         command = { "command": ["stop"] }
 
-    elif action == 'repeat_playlist':
+    elif action == 'repeat':
         command = { "command": ["cycle-values", "loop-playlist", "inf", "no"] }
 
     send_mpv_command(ipc_path, command)
