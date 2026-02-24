@@ -188,8 +188,11 @@
             .then(response => response.json())
             .then(data => {
                 if (data == 'success') {
+                    // Refresh playlist
                     btn_pressed_playlist = false;
                     show_playlist();
+                    const pbutton = document.getElementById('btn-playlist');
+                    pbutton.classList.toggle('active');
                 }
             })
             .catch(error => console.error('Error:', error));
