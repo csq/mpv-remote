@@ -33,6 +33,11 @@ This Flask-based web interfaz provides a comprehensive media control interface f
   - Delete radio stations
   - Play radio streams
 
+- **Playlist Management**
+  - Show current playlist
+  - Remove tracks
+  - Play any track
+
 ## Prerequisites
 
 - <b>Python 3.9+</b>
