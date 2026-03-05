@@ -38,8 +38,13 @@
         <row class="row">
             <button onclick="got_to_bookmark()"><i class="icon fas fa-bookmark"></i></button>
             <button onclick="go_to_radio()"><i class="icon fas fa-radio"></i></button>
+            <button onclick="show_upload_form()" id="btn-upload"><i class="icon fas fa-folder"></i></button>
         </row>
     </div>
+    <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data" hidden>
+        <input type="file" name="file" id="audioFile" accept="audio/*" multiple required>
+        <button type="submit" id="btn-upload"><i class="fas fa-upload"></i> Upload</button>
+    </form>
     <div id="playlist">
         <h2>Playlist</h2>
         <table id="playlistTable">
@@ -64,6 +69,7 @@
     var btn_pressed_pause = btn_state.pause;
     var btn_pressed_repeat = btn_state.repeat;
     var btn_pressed_playlist = false;
+    var btn_pressed_upload = false;
 
     document.getElementById('urlForm').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -196,6 +202,32 @@
                 }
             })
             .catch(error => console.error('Error:', error));
+    }
+
+    function show_upload_form() {
+        const form_upload_button = document.getElementById('btn-upload');
+        form_upload_button.classList.toggle('active');
+
+        if (btn_pressed_upload == true) {
+            document.getElementById('uploadForm').style.display = 'none';
+            form_upload_button.innerHTML = '<i class="fas fa-folder"></i>';
+            btn_pressed_upload = false;
+        } else {
+            document.getElementById('uploadForm').style.display = 'block';
+            form_upload_button.innerHTML = '<i class="fas fa-folder-open"></i>';
+            btn_pressed_upload = true;
+        }
+    }
+
+    function upload() {
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData();
+                formData.append('file', document.getElementById('audioFile').files[0]);
+
+                const response = await fetch('/upload', { method: 'POST', body: formData });
+                const data = await response.json();
+            });
     }
 
 </script>

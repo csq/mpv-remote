@@ -7,6 +7,7 @@ import argparse
 from flask import Flask, request, render_template, jsonify, redirect, url_for
 from urllib.parse import unquote
 from app.database import Database
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__, template_folder=os.path.join('app','templates'), static_folder=os.path.join('app','static'))
 
@@ -19,6 +20,9 @@ parser.add_argument('--port', type=int, default=5000)
 args = parser.parse_args()
 
 ipc_path = args.ipc_path
+
+UPLOAD_FOLDER = os.path.join(tempfile.gettempdir(), 'mpv-remote', 'uploads')
+ALLOWED_EXTENSIONS = {'mp3', 'wma', 'flac', 'wav', 'ogg', 'aac', 'ape', 'alac', 'aiff'}
 
 @app.route('/')
 def index():
@@ -58,6 +62,38 @@ def playing():
 
     return jsonify({"status": "success", "url": url})
 
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    global ipc_path
+
+    # Create tmp folder if it doesn't exist
+    if not os.path.exists(UPLOAD_FOLDER):
+        os.makedirs(UPLOAD_FOLDER)
+
+    # Get the files from the request
+    files = request.files.getlist("file")
+
+    list_paths = []
+
+    # Save the files to the tmp folder
+    for file in files:
+        if allowed_file_extension(file.filename):
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(UPLOAD_FOLDER, filename)
+            list_paths.append(file_path)
+            file.save(file_path)
+
+    # Stop current song
+    command = { "command": ["stop"] }
+    send_mpv_command(ipc_path, command)
+
+    # Load the files
+    for path in list_paths:
+        command = { "command": ["loadfile", path, "append-play"] }
+        send_mpv_command(ipc_path, command)
+
+    return redirect(url_for('index'))
+
 @app.route('/control/<action>', methods=['POST'])
 def control(action):
     global ipc_path
@@ -84,6 +120,7 @@ def control(action):
 
     elif action == 'stop':
         command = { "command": ["stop"] }
+        clean_tmp_folder()
 
     elif action == 'repeat':
         command = { "command": ["cycle-values", "loop-playlist", "inf", "no"] }
@@ -292,6 +329,21 @@ def get_volume():
     command = { "command": ["get_property", "volume"] }
     response = send_mpv_command(ipc_path, command)
     return json.loads(response)['data']
+
+def allowed_file_extension(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def clean_tmp_folder():
+    for filename in os.listdir(UPLOAD_FOLDER):
+        file_path = os.path.join(UPLOAD_FOLDER, filename)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+        except Exception as e:
+            print('Failed to delete %s. Reason: %s' % (file_path, e))
 
 if __name__ == '__main__':
     args = parser.parse_args()
