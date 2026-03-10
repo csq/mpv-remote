@@ -1,21 +1,26 @@
 import os
+import sys
 import json
 import socket
 import tempfile
 import argparse
 
-from flask import Flask, request, render_template, jsonify, redirect, url_for
-from urllib.parse import unquote
-from app.database import Database
+from flask import Flask, request, render_template, jsonify, redirect, url_for, session
+from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
+from urllib.parse import unquote
+from functools import wraps
+from app.database import Database
 
 app = Flask(__name__, template_folder=os.path.join('app','templates'), static_folder=os.path.join('app','static'))
+app.secret_key = os.urandom(24)
 
 # Parse command line arguments
 parser = argparse.ArgumentParser()
-parser.add_argument('--ipc-path', type=str, default=os.path.join(tempfile.gettempdir(), 'mpv_socket'))
-parser.add_argument('--host', type=str, default='127.0.0.1')
-parser.add_argument('--port', type=int, default=5000)
+parser.add_argument('--ipc-path', type=str, default=os.path.join(tempfile.gettempdir(), 'mpv_socket'), help='Path to MPV socket (default: /tmp/mpv_socket)')
+parser.add_argument('--host', type=str, default='127.0.0.1', help='Host to bind to (default: 127.0.0.1)')
+parser.add_argument('--port', type=int, default=5000, help='Port to run the server on (default: 5000)')
+parser.add_argument('--auth', type=str, default=None, help='Initialize user credentials (format: username:password)')
 
 args = parser.parse_args()
 
@@ -24,7 +29,55 @@ ipc_path = args.ipc_path
 UPLOAD_FOLDER = os.path.join(tempfile.gettempdir(), 'mpv-remote', 'uploads')
 ALLOWED_EXTENSIONS = {'mp3', 'wma', 'flac', 'wav', 'ogg', 'aac', 'ape', 'alac', 'aiff'}
 
-@app.route('/')
+# Check if authentication is enabled
+def auth_enabled():
+    return '--auth' in sys.argv
+
+# Check if user is logged in
+def is_logged_in():
+    return 'username' in session
+
+# Login required decorator
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if auth_enabled() and is_logged_in() == False:
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+def require_auth_flag(f):
+    if auth_enabled():
+        return app.route('/login', methods=['GET', 'POST'])(f)
+    return f
+
+@require_auth_flag
+def login():
+    if request.method == 'GET':
+        if auth_enabled() and is_logged_in():
+            return redirect(url_for('index'))
+        return render_template('login.html')
+
+    if auth_enabled():
+        username, password = args.auth.split(':')
+
+    user_credentials = {
+        username: generate_password_hash(password)
+    }
+
+    username_input = request.form.get('username')
+    password_input = request.form.get('password')
+
+    if username_input == username and check_password_hash(
+        user_credentials[username_input], password_input
+    ):
+        session['username'] = username_input
+        return redirect(url_for('index'))
+
+    return render_template('login.html', error='Invalid username or password')
+
+@app.route('/', methods=['GET'])
+@login_required
 def index():
     global ipc_path
 
@@ -52,6 +105,7 @@ def index():
     return render_template('index.html', btn_states=btn_states)
 
 @app.route('/playing', methods=['POST'])
+@login_required
 def playing():
     global ipc_path
 
@@ -63,6 +117,7 @@ def playing():
     return jsonify({"status": "success", "url": url})
 
 @app.route('/upload', methods=['POST'])
+@login_required
 def upload_file():
     global ipc_path
 
@@ -95,6 +150,7 @@ def upload_file():
     return redirect(url_for('index'))
 
 @app.route('/control/<action>', methods=['POST'])
+@login_required
 def control(action):
     global ipc_path
 
@@ -129,12 +185,14 @@ def control(action):
     return jsonify({'message': f'Action {action} executed'})
 
 @app.route('/bookmark', methods=['GET'])
+@login_required
 def bookmark():
     db = Database()
     data = db.get_bookmarks()
     return render_template('bookmark/bookmark.html', data=data)
 
 @app.route('/bookmark/add', methods=['GET', 'POST'])
+@login_required
 def go_to_add_bookmark():
     if request.method == 'GET':
         return render_template('/bookmark/bookmark_form.html', edit_mode=False)
@@ -146,6 +204,7 @@ def go_to_add_bookmark():
         return redirect(url_for('bookmark'))
 
 @app.route('/bookmark/delete/<int:bookmark_id>', methods=['POST'])
+@login_required
 def delete_bookmark(bookmark_id):
     try:
         db = Database()
@@ -156,6 +215,7 @@ def delete_bookmark(bookmark_id):
     return redirect(url_for('bookmark'))
 
 @app.route('/bookmark/edit/<int:bookmark_id>', methods=['GET', 'POST'])
+@login_required
 def edit_bookmark(bookmark_id):
     if request.method == 'GET':
         db = Database()
@@ -170,6 +230,7 @@ def edit_bookmark(bookmark_id):
         return redirect(url_for('bookmark'))
 
 @app.route('/bookmark/play/<path:url>', methods=['POST'])
+@login_required
 def play_bookmark(url):
     global ipc_path
 
@@ -188,12 +249,14 @@ def play_bookmark(url):
         return jsonify({"status": "error", "message": str(e)}), 500
 
 @app.route('/radio', methods=['GET'])
+@login_required
 def radio():
     db = Database()
     data = db.get_radios()
     return render_template('radio/radio.html', data=data)
 
 @app.route('/radio/add', methods=['GET', 'POST'])
+@login_required
 def go_to_add_radio():
     if request.method == 'GET':
         return render_template('radio/radio_form.html', edit_mode=False)
@@ -205,6 +268,7 @@ def go_to_add_radio():
         return redirect(url_for('radio'))
 
 @app.route('/radio/delete/<int:radio_id>', methods=['POST'])
+@login_required
 def delete_radio(radio_id):
     try:
         db = Database()
@@ -215,6 +279,7 @@ def delete_radio(radio_id):
     return redirect(url_for('radio'))
 
 @app.route('/radio/edit/<int:radio_id>', methods=['GET', 'POST'])
+@login_required
 def edit_radio(radio_id):
     if request.method == 'GET':
         db = Database()
@@ -229,6 +294,7 @@ def edit_radio(radio_id):
         return redirect(url_for('radio'))
 
 @app.route('/radio/play/<path:url>', methods=['POST'])
+@login_required
 def play_radio(url):
     global ipc_path
 
@@ -247,6 +313,7 @@ def play_radio(url):
         return jsonify({"status": "error", "message": str(e)}), 500
 
 @app.route('/playlist', methods=['GET'])
+@login_required
 def get_playlist():
     global ipc_path
 
@@ -256,6 +323,7 @@ def get_playlist():
     return jsonify(json.loads(response)['data'])
 
 @app.route('/playlist/play/<int:index>', methods=['POST'])
+@login_required
 def play_item_from_playlist(index):
     global ipc_path
 
@@ -265,6 +333,7 @@ def play_item_from_playlist(index):
     return jsonify(json.loads(response)['error'])
 
 @app.route('/playlist/delete/<int:index>', methods=['POST'])
+@login_required
 def delete_item_from_playlist(index):
     global ipc_path
 
@@ -274,6 +343,7 @@ def delete_item_from_playlist(index):
     return jsonify(json.loads(response)['error'])
 
 @app.route('/media-info')
+@login_required
 def get_media_info():
     global ipc_path
 
@@ -317,6 +387,8 @@ def get_media_info():
     })
 
 def page_not_found(error):
+    if auth_enabled() and is_logged_in() == False:
+        return redirect(url_for('login'))
     return redirect(url_for('index'))
 
 def send_mpv_command(ipc_path, command):

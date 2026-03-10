@@ -1,0 +1,60 @@
+{% block title %}
+<title>MPV Remote - Login</title>
+{% endblock %}
+
+{% block head_content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/pages/login.css') }}">
+{% endblock %}
+
+{% block body_content %}
+<div id="url-form-container">
+    <div class="login-card">
+        <div class="login-header">
+            <h1>MPV-Remote</h1>
+        </div>
+
+        <form method="POST" action="/login" class="login-form">
+            <div class="form-group">
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    class="form-input"
+                    placeholder="Username"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    class="form-input"
+                    placeholder="Password"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="submit-btn">Login</button>
+        </form>
+
+        {% if error %}
+            <div class="error-message" id="error-alert">
+                <span class="error-text">{{ error }}</span>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    // Temporized error message
+    const errorAlert = document.getElementById('error-alert');
+    if (errorAlert) {
+        setTimeout(function() {
+            errorAlert.style.display = 'none';
+        }, 3000);
+    }
+</script>
+
+{% endblock %}
