@@ -38,7 +38,7 @@
         <row class="row">
             <button onclick="got_to_bookmark()"><i class="icon fas fa-bookmark"></i></button>
             <button onclick="go_to_radio()"><i class="icon fas fa-radio"></i></button>
-            <button onclick="show_upload_form()" id="btn-upload"><i class="icon fas fa-folder"></i></button>
+            <button onclick="show_upload_form()" id="btn-upload" hidden><i class="icon fas fa-folder"></i></button>
         </row>
     </div>
     <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data" hidden>
@@ -70,6 +70,7 @@
     var btn_pressed_repeat = btn_state.repeat;
     var btn_pressed_playlist = false;
     var btn_pressed_upload = false;
+    var show_upload_button = btn_state.upload_allowed;
 
     document.getElementById('urlForm').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -101,6 +102,11 @@
             console.error('Error:', error);
         });
     });
+
+    // Show the upload button
+    if (show_upload_button) {
+        document.getElementById('btn-upload').hidden = false;
+    };
 
     function control(action) {
         fetch(`/control/${action}`, { method: 'POST' })

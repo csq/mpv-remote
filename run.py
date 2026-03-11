@@ -21,6 +21,7 @@ parser.add_argument('--ipc-path', type=str, default=os.path.join(tempfile.gettem
 parser.add_argument('--host', type=str, default='127.0.0.1', help='Host to bind to (default: 127.0.0.1)')
 parser.add_argument('--port', type=int, default=5000, help='Port to run the server on (default: 5000)')
 parser.add_argument('--auth', type=str, default=None, help='Initialize user credentials (format: username:password)')
+parser.add_argument('--allow-upload', action='store_true', help='Allow file upload (default: False)')
 
 args = parser.parse_args()
 
@@ -49,6 +50,11 @@ def login_required(f):
 def require_auth_flag(f):
     if auth_enabled():
         return app.route('/login', methods=['GET', 'POST'])(f)
+    return f
+
+def required_upload_flag(f):
+    if '--allow-upload' in sys.argv:
+        return app.route('/upload', methods=['POST'])(f)
     return f
 
 @require_auth_flag
@@ -99,8 +105,12 @@ def index():
     btn_states = {
         "pause": btn_pause_state,
         "mute": btn_mute_state,
-        "repeat": btn_repeat_state
+        "repeat": btn_repeat_state,
+        "upload_allowed": False
     }
+
+    # Set upload state based on CLI flag
+    btn_states['upload_allowed'] = '--allow-upload' in sys.argv
 
     return render_template('index.html', btn_states=btn_states)
 
@@ -116,7 +126,7 @@ def playing():
 
     return jsonify({"status": "success", "url": url})
 
-@app.route('/upload', methods=['POST'])
+@required_upload_flag
 @login_required
 def upload_file():
     global ipc_path
