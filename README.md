@@ -68,6 +68,18 @@ mpv --input-ipc-server=/tmp/mpv_socket --idle
 ```
 * Ensure MPV is running with a Unix socket enabled (default name socket: mpv_socket)
 
+## Command-Line Options
+
+The application supports the following command-line arguments to customize its behavior:
+
+| OPTION | TYPE | DEFAULT | DESCRIPTION |
+|--------|------|---------|-------------|
+| `--ipc-path` | string | `/tmp/mpv_socket` | **Path to the mpv player socket** for IPC communication. |
+| `--host` | string | `127.0.0.1` | **Host address to bind the server to.** Use `0.0.0.0` to accept external connections. |
+| `--port` | integer | `5000` | **Port number for the server** to listen on. |
+| `--auth` | string | None | **User authentication credentials** in the format `username:password`. When set, enables authentication for API requests. |
+| `--allow-upload` | boolean | False | **Enable file upload functionality.** Use this flag to allow users to upload media files to the server. |
+
 ## Running app
 #### Default
 
@@ -82,6 +94,11 @@ python3 run.py
 python3 run.py --ipc-path /tmp/mpv_skt --host 0.0.0.0 --port 5050
 ```
 * Example for used only in trusted network
+
+#### Enable authentication and file uploads:
+```bash
+python app.py --auth admin:secretpassword --allow-upload
+```
 
 ## Project structure
 
