@@ -43,7 +43,9 @@
     </div>
     <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data" hidden>
         <input type="file" name="file" id="audioFile" accept="audio/*" multiple required>
-        <button type="submit" id="btn-upload"><i class="fas fa-upload"></i> Upload</button>
+        <input type="checkbox" id="upload_folder" name="upload_folder">
+        <label for="upload_folder">Add folder</label>
+        <button type="submit" id="btn-upload"><i class="fas fa-cloud-upload-alt"></i> Upload</button>
     </form>
     <div id="playlist">
         <h2>Playlist</h2>
@@ -235,6 +237,22 @@
                 const data = await response.json();
             });
     }
+
+    // Folder upload handling
+    const audioFile = document.getElementById('audioFile');
+    const uploadFolder = document.getElementById('upload_folder');
+
+    uploadFolder.addEventListener('change', function() {
+        if (this.checked) {
+            // Enable folder upload
+            audioFile.setAttribute('webkitdirectory', '');
+            audioFile.setAttribute('multiple', '');
+        } else {
+            // Revert to file upload
+            audioFile.removeAttribute('webkitdirectory');
+        }
+    });
+
 
 </script>
 {% endblock %}
