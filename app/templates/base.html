@@ -19,7 +19,7 @@
             <div id="modal" class="modal">
                 <div class="modal-content">
                     <span class="modal-close">&times;</span>
-                    <p id="modal-message"></p>
+                    <pre id="modal-message" style="white-space: pre-wrap; word-wrap: break-word;"></pre>
                 </div>
             </div>
             {% block body_content %}{% endblock %}
@@ -34,7 +34,7 @@
 
         function openModal(message) {
             const modalMessage = document.getElementById('modal-message');
-            modalMessage.textContent = message;
+            modalMessage.innerHTML = message;
             modal.classList.add('is-visible');
         }
 

@@ -22,6 +22,7 @@ parser.add_argument('--host', type=str, default='127.0.0.1', help='Host to bind 
 parser.add_argument('--port', type=int, default=5000, help='Port to run the server on (default: 5000)')
 parser.add_argument('--auth', type=str, default=None, help='Initialize user credentials (format: username:password)')
 parser.add_argument('--allow-upload', action='store_true', help='Allow file upload (default: False)')
+parser.add_argument('--ytm-search', action='store_true', help='Enable ytmusic search (default: False)')
 
 args = parser.parse_args()
 
@@ -106,13 +107,16 @@ def index():
         "pause": btn_pause_state,
         "mute": btn_mute_state,
         "repeat": btn_repeat_state,
-        "upload_allowed": False
+        "upload_allowed": False,
+        "ytm_search": False
     }
 
-    # Set upload state based on CLI flag
-    btn_states['upload_allowed'] = '--allow-upload' in sys.argv
+    available_features = {
+        'upload_file': '--allow-upload' in sys.argv,
+        'ytmusic_search': '--ytm-search' in sys.argv
+    }
 
-    return render_template('index.html', btn_states=btn_states)
+    return render_template('index.html', btn_states=btn_states, available_features=available_features)
 
 @app.route('/playing', methods=['POST'])
 @login_required
@@ -193,6 +197,41 @@ def control(action):
 
     send_mpv_command(ipc_path, command)
     return jsonify({'message': f'Action {action} executed'})
+
+@app.route('/search', methods=['GET'])
+@login_required
+def search():
+    return render_template('ytmusic.html')
+
+@app.route('/search', methods=['POST'])
+@login_required
+def search_ytmusic():
+    from ytmusicapi import YTMusic
+
+    ytmusic = YTMusic()
+    search_query = request.form['search']
+
+    ytmusic_results = ytmusic.search(search_query, filter="albums", ignore_spelling=True)
+    return render_template('ytmusic.html', data=ytmusic_results)
+
+@app.route('/ytmusic/play/<string:playlistId>', methods=['POST'])
+@login_required
+def play_ytmusic(playlistId):
+    prefix = "https://music.youtube.com/playlist?list="
+    command = { "command": ["loadfile", prefix + playlistId] }
+    send_mpv_command(ipc_path, command)
+    return jsonify({"status": "success"})
+
+@app.route('/ytmusic/view/<string:playlistId>', methods=['POST'])
+@login_required
+def view_ytmusic(playlistId):
+    from ytmusicapi import YTMusic
+
+    ytmusic = YTMusic()
+
+    result = YTMusic.get_album(self=ytmusic, browseId=playlistId)
+
+    return jsonify(result)
 
 @app.route('/bookmark', methods=['GET'])
 @login_required

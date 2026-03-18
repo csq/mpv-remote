@@ -39,6 +39,7 @@
             <button onclick="got_to_bookmark()"><i class="icon fas fa-bookmark"></i></button>
             <button onclick="go_to_radio()"><i class="icon fas fa-radio"></i></button>
             <button onclick="show_upload_form()" id="btn-upload" hidden><i class="icon fas fa-folder"></i></button>
+            <button onclick="got_to_search()" id="btn-ytmusic" hidden><i class="icon fas fa-search"></i></button>
         </row>
     </div>
     <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data" hidden>
@@ -66,13 +67,17 @@
 
 <script>
     const btn_state = JSON.parse('{{ btn_states | tojson }}');
+    const available_features = JSON.parse('{{ available_features | tojson }}');
 
     var btn_pressed_mute = btn_state.mute
     var btn_pressed_pause = btn_state.pause;
     var btn_pressed_repeat = btn_state.repeat;
+
     var btn_pressed_playlist = false;
     var btn_pressed_upload = false;
-    var show_upload_button = btn_state.upload_allowed;
+
+    var show_upload_button = available_features.upload_file;
+    var show_ytmusic_button = available_features.ytmusic_search;
 
     document.getElementById('urlForm').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -108,6 +113,11 @@
     // Show the upload button
     if (show_upload_button) {
         document.getElementById('btn-upload').hidden = false;
+    };
+
+    // Show the ytmusic button
+    if (show_ytmusic_button) {
+        document.getElementById('btn-ytmusic').hidden = false;
     };
 
     function control(action) {
@@ -253,6 +263,9 @@
         }
     });
 
+    function got_to_search() {
+        window.location.href = '/search';
+    }
 
 </script>
 {% endblock %}
