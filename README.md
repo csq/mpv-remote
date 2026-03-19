@@ -38,10 +38,21 @@ This Flask-based web interfaz provides a comprehensive media control interface f
   - Remove tracks
   - Play any track
 
+- **Upload Your Music**
+  - Upload media files to the server
+  - Manage uploaded tracks in playlist
+
+- **Search Albums in YTMusic**
+  - Search YTMusic catalog
+  - View album details
+  - Play albums
+  - Add albums to bookmarks
+
 ## Prerequisites
 
 - <b>Python 3.9+</b>
 - <b>Flask</b>
+- <b>Ytmusicapi</b>
 - <b>MPV Media Player</b>
 
 ### Recommended
@@ -79,6 +90,7 @@ The application supports the following command-line arguments to customize its b
 | `--port` | integer | `5000` | **Port number for the server** to listen on. |
 | `--auth` | string | None | **User authentication credentials** in the format `username:password`. When set, enables authentication for API requests. |
 | `--allow-upload` | boolean | False | **Enable file upload functionality.** Use this flag to allow users to upload media files to the server. |
+| `--ytm-search` | boolean | False | **Enable ytmusic search.** Enables YTMusic search. Users can search the YTMusic catalog. |
 
 ## Running app
 #### Default
