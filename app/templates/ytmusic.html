@@ -42,6 +42,9 @@
                         <button id="btn-playlist" onclick="view_playlist('{{ item.browseId }}')">
                             <i class="fas fa-list"></i>
                         </button>
+                        <button id="btn-bookmark" onclick="save_to_bookmark('{{ item.artists[0].name }} - {{ item.title }} ({{ item.year }})', '{{ item.playlistId }}')">
+                            <i class="fas fa-bookmark"></i>
+                        </button>
                         <button id="btn-play" onclick="play_ytmusic('{{ item.playlistId }}', '{{ item.title }}')">
                             <i class="fas fa-play"></i>
                         </button>
@@ -93,6 +96,16 @@
 
     function go_to_back() {
         window.location.href = '/';
+    }
+
+    function save_to_bookmark(title, browseId) {
+        fetch(`/bookmark/add/${title}/${browseId}`, { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                openModal("Saved to bookmarks");
+                closeModal(1000);
+            })
+            .catch(error => console.error('Error:', error));
     }
 
 </script>

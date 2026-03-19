@@ -252,6 +252,14 @@ def go_to_add_bookmark():
         db.insert_bookmark(bookmark_name, bookmark_url)
         return redirect(url_for('bookmark'))
 
+@app.route('/bookmark/add/<string:title>/<string:browseId>', methods=['POST'])
+@login_required
+def save_bookmark(title, browseId):
+    db = Database()
+    bookmark_url = f"https://music.youtube.com/playlist?list={browseId}"
+    db.insert_bookmark(title, bookmark_url)
+    return jsonify({"status": "success"})
+
 @app.route('/bookmark/delete/<int:bookmark_id>', methods=['POST'])
 @login_required
 def delete_bookmark(bookmark_id):

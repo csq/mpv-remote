@@ -78,6 +78,23 @@
     box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
 }
 
+#btn-bookmark {
+    background-color: green;
+    color: #ffffff;
+    border-radius: 10px;
+    border: none;
+    padding: 5px 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+}
+
+#btn-bookmark:hover {
+    background-color: green;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
 #btn-play:active {
     transform: translateY(0);
 }
