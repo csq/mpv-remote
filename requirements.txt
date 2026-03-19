@@ -6,3 +6,4 @@ Jinja2==3.1.6
 MarkupSafe==3.0.3
 platformdirs==4.5.1
 Werkzeug==3.1.5
+ytmusicapi==1.11.5
