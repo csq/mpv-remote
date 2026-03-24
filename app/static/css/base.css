@@ -27,7 +27,7 @@ body {
 
 /* Marquee effect for the media title */
 #media-title {
-    width: 90%;
+    width: 100%;
     overflow: hidden;
     margin: 0;
     text-align: center;
