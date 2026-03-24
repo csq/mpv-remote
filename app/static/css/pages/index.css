@@ -91,7 +91,7 @@ button:active {
 
 .row {
     display: block;
-    width: 80%;
+    width: 85%;
     margin: 0 auto;
     justify-content: center;
     align-items: center;
@@ -130,13 +130,12 @@ button:active {
     text-overflow: ellipsis;
 }
 
-@media (max-width: 600px) {
+/* Tablet */
+@media (max-width: 900px) {
     #url-form-container {
         margin-top: 40%;
     }
-}
 
-@media (max-width: 900px) {
     #playlistList tr td:nth-child(2) {
         max-width: 100px;
         text-overflow: ellipsis;
@@ -149,12 +148,15 @@ button:active {
     }
 }
 
-@media (max-width: 900px) and (orientation: landscape) {
+/* Mobile */
+@media (min-width: 411px) {
     .row {
         width: 85%;
     }
+}
 
-    .stream-url {
-        display: block;
+@media (min-width: 432px) {
+    .row {
+        width: 80%;
     }
 }
