@@ -32,8 +32,6 @@ table td {
     }
 
     .radio-item .btn {
-        padding: 5px 10px;
-        margin-inline-end: 5px;
         size-adjust: auto;
     }
 }

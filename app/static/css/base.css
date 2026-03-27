@@ -75,8 +75,13 @@ button:active {
 }
 
 .btn-sm {
-    padding: 5px 10px;
-    font-size: 15px;
+    border-radius: 10px;
+    border: none;
+    padding: 5px 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+    font-size: 14px;
 }
 
 .btn-success {
