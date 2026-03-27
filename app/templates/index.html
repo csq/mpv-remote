@@ -168,8 +168,8 @@
                         var index = 1;
                         data.forEach(item => {
                             const row = `
-                                <tr>
-                                    <td>${index++}</td>
+                                <tr ${item.playing ? 'class="playing"' : ''}>
+                                    <td>${(index++, item.playing ? '<i class="fas fa-volume-up"></i>' : index - 1)}</td>
                                     <td>${item.title ? item.title : 'Unknown'}</td>
                                     <td class="stream-url">${item.filename}</td>
                                     <td>
@@ -266,6 +266,33 @@
     function go_to_search() {
         window.location.href = '/search';
     }
+
+    // Watch for changes to media title if changing update playlist
+    const mediaTitle = document.getElementById('media-title');
+    let lastText = mediaTitle.textContent;
+
+    const observer = new MutationObserver(() => {
+        const currentText = mediaTitle.textContent;
+
+        // Only trigger if text is DIFFERENT from last time
+        if (currentText !== lastText) {
+            lastText = currentText;
+
+            if (btn_pressed_playlist) {
+                btn_pressed_playlist = false;
+                show_playlist();
+                const pbutton = document.getElementById('btn-playlist');
+                pbutton.classList.toggle('active');
+            }
+        }
+    });
+
+    // Start observing
+    observer.observe(mediaTitle, {
+        characterData: true,
+        childList: true,
+        subtree: true
+    });
 
 </script>
 {% endblock %}

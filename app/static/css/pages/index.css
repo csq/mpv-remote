@@ -138,6 +138,13 @@ button:active {
     text-overflow: ellipsis;
 }
 
+.playing {
+    background-color: #333;
+    font-style: italic;
+    color: #ffffff;
+    font-weight: bold;
+}
+
 /* Tablet */
 @media (max-width: 900px) {
     #url-form-container {
