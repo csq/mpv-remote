@@ -198,21 +198,21 @@ def control(action):
     send_mpv_command(ipc_path, command)
     return jsonify({'message': f'Action {action} executed'})
 
-@app.route('/search', methods=['GET'])
-@login_required
-def search():
-    return render_template('ytmusic.html')
-
-@app.route('/search', methods=['POST'])
+@app.route('/search', methods=['GET', 'POST'])
 @login_required
 def search_ytmusic():
     from ytmusicapi import YTMusic
 
-    ytmusic = YTMusic()
-    search_query = request.form['search']
+    if request.method == 'GET':
+        return render_template('ytmusic.html')
 
-    ytmusic_results = ytmusic.search(search_query, filter="albums", ignore_spelling=True)
-    return render_template('ytmusic.html', data=ytmusic_results)
+    search_query = request.form['search']
+    ytmusic = YTMusic()
+    results = ytmusic.search(
+        search_query, filter="albums", ignore_spelling=True
+    )
+
+    return render_template('ytmusic.html', data=results)
 
 @app.route('/ytmusic/play/<string:playlistId>', methods=['POST'])
 @login_required
