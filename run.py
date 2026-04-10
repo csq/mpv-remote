@@ -133,6 +133,7 @@ def playing():
 @required_upload_flag
 @login_required
 def upload_file():
+    from pathlib import Path
     global ipc_path
 
     # Create tmp folder if it doesn't exist
@@ -147,7 +148,7 @@ def upload_file():
     # Save the files to the tmp folder
     for file in files:
         if allowed_file_extension(file.filename):
-            filename = secure_filename(file.filename)
+            filename = secure_filename(Path(file.filename).name)
             file_path = os.path.join(UPLOAD_FOLDER, filename)
             list_paths.append(file_path)
             file.save(file_path)

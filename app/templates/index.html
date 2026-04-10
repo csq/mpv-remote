@@ -167,10 +167,14 @@
                         // Populate table with new data
                         var index = 1;
                         data.forEach(item => {
+                            // Get the file name without extension
+                            const fileNameParts = item.filename.split('/').pop().split('.');
+                            const fileName = fileNameParts.slice(0, -1).join(' ').replace(/_/g, ' ').replace(/^\d+[\s.\-]*/, '').split('-').pop();
+
                             const row = `
                                 <tr ${item.playing ? 'class="playing"' : ''}>
                                     <td>${(index++, item.playing ? '<i class="fas fa-volume-up"></i>' : index - 1)}</td>
-                                    <td>${item.title ? item.title : 'Unknown'}</td>
+                                    <td>${item.title ? item.title : fileName}</td>
                                     <td class="stream-url">${item.filename}</td>
                                     <td>
                                         <div class="playlist-item" data-playlist-id="${item.id}">
