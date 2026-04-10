@@ -82,12 +82,12 @@
         window.location.href = `/bookmark/edit/${bookmark_id}`;
     }
 
-    function play_bookmark(name, url) {
-        const encodedUrl = encodeURIComponent(url);
+    function play_bookmark(name, path) {
+        const encodedPath = path.includes('http') ? encodeURIComponent(path) : path;
 
         showModalAndHideAfterDelay("Playing bookmark: " + name, 1000);
 
-        fetch(`/bookmark/play/${encodedUrl}`, { 
+        fetch(`/bookmark/play/${encodedPath}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

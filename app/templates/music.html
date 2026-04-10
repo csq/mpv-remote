@@ -25,10 +25,10 @@
                 <td>
                     <!-- <button id="btn-playlist">
                         <i class="fas fa-list"></i>
-                    </button>
+                    </button> -->
                     <button id="btn-bookmark" onclick="add_bookmark('{{ item.name }}', '{{ item.path }}');">
                         <i class="fas fa-bookmark"></i>
-                    </button> -->
+                    </button>
                     <button id="btn-play" onclick="play_music('{{ item.name }}', '{{ item.path }}');">
                         <i class="fas fa-play"></i>
                     </button>
@@ -66,7 +66,9 @@
         });
     }
 
-    /* function add_bookmark(title, path) {
+    function add_bookmark(title, path) {
+        showModalAndHideAfterDelay('Saved to bookmarks', 1000);
+
         const bookmarkData = {
             name: title,
             path: path
@@ -80,8 +82,7 @@
             body: JSON.stringify(bookmarkData)
         })
         .then(response => response.json())
-        .then(() => showModalAndHideAfterDelay('Saved to bookmarks', 1000))
         .catch(error => console.error('Error adding bookmark:', error));
-    } */
+    }
 </script>
 {% endblock %}

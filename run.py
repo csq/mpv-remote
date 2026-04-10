@@ -255,9 +255,9 @@ def go_to_add_bookmark():
         return render_template('/bookmark/bookmark_form.html', edit_mode=False)
     elif request.method == 'POST':
         db = Database()
-        bookmark_name = request.form['name']
-        bookmark_url = request.form['url']
-        db.insert_bookmark(bookmark_name, bookmark_url)
+        bookmark_name = request.get_json()['name']
+        bookmark_path = request.get_json()['path']
+        db.insert_bookmark(bookmark_name, bookmark_path)
         return redirect(url_for('bookmark'))
 
 @app.route('/bookmark/add/<string:title>/<string:browseId>', methods=['POST'])
@@ -294,21 +294,22 @@ def edit_bookmark(bookmark_id):
         db.update_bookmark(bookmark_id, new_name, new_url)
         return redirect(url_for('bookmark'))
 
-@app.route('/bookmark/play/<path:url>', methods=['POST'])
+@app.route('/bookmark/play/<path:path>', methods=['POST'])
 @login_required
-def play_bookmark(url):
+def play_bookmark(path):
+    from pathlib import Path
     global ipc_path
 
     try:
-        decoded_url = unquote(url)
-        command = {"command": ["loadfile", decoded_url]}
+        decoded_path = unquote(path) if path.startswith('http') else Path('/' + path).as_posix()
+        command = {"command": ["loadfile", decoded_path]}
 
         # Check if socket exists before sending command
         if not os.path.exists(ipc_path):
             return jsonify({"status": "error", "message": "MPV socket not found"}), 500
 
         send_mpv_command(ipc_path, command)
-        return jsonify({"status": "success", "url": decoded_url})
+        return jsonify({"status": "success", "path": decoded_path})
 
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
