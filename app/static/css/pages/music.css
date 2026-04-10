@@ -1,0 +1,86 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    align-content: center;
+}
+
+table th {
+    background-color: #333;
+    color: #ffffff;
+    padding: 10px;
+    border: 1px solid #333;
+    border-bottom: 1px solid #333;
+    text-overflow: ellipsis;
+}
+
+table td {
+    padding: auto;
+    border: 1px solid #333;
+    text-overflow: ellipsis;
+}
+
+#btn-play {
+    background-color: #333;
+    color: #ffffff;
+    border-radius: 10px;
+    border: none;
+    padding: 5px 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+}
+
+#btn-play:hover {
+    background-color: #333;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+#btn-bookmark {
+    background-color: green;
+    color: #ffffff;
+    border-radius: 10px;
+    border: none;
+    padding: 5px 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+}
+
+#btn-bookmark:hover {
+    background-color: green;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+#btn-play:active {
+    transform: translateY(0);
+}
+
+#btn-playlist {
+    background-color: blueviolet;
+    color: #ffffff;
+    border-radius: 10px;
+    border: none;
+    padding: 5px 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+}
+
+#btn-playlist:hover {
+    background-color: blueviolet;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+@media (max-width: 600px) {
+    .stream-path {
+        display: none;
+    }
+
+    .music-item .btn {
+        size-adjust: auto;
+    }
+}

@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Music Collection</title>
+{% endblock %}
+
+{% block head_content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/pages/music.css') }}">
+{% endblock %}
+
+{% block body_content %}
+<h1>Local Music Collection</h1>
+<button onclick="go_to_back()"><i class="icon fas fa-angle-left"></i>Back</button>
+<table id="musicTable">
+    <thead>
+        <tr>
+            <th>NAME</th>
+            <th>ACTIONS</th>
+        </tr>
+    </thead>
+    <tbody id="musicList">
+        {% for item in music_catalog %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>
+                    <!-- <button id="btn-playlist">
+                        <i class="fas fa-list"></i>
+                    </button>
+                    <button id="btn-bookmark" onclick="add_bookmark('{{ item.name }}', '{{ item.path }}');">
+                        <i class="fas fa-bookmark"></i>
+                    </button> -->
+                    <button id="btn-play" onclick="play_music('{{ item.name }}', '{{ item.path }}');">
+                        <i class="fas fa-play"></i>
+                    </button>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<script>
+    function go_to_back() {
+        window.location.href = '/';
+    }
+
+    function play_music(name, path) {
+        openModalAndCloseAfterDelay('Now playing: ' + name, 1000);
+
+        fetch(`/local/play/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ path: path })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Local music play successful:', data);
+        })
+        .catch(error => {
+            console.error('Error playing local music:', error);
+        });
+    }
+
+    /* function add_bookmark(title, path) {
+        const bookmarkData = {
+            name: title,
+            path: path
+        };
+
+        fetch('/bookmark/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(bookmarkData)
+        })
+        .then(response => response.json())
+        .then(() => openModalAndCloseAfterDelay('Saved to bookmarks', 1000))
+        .catch(error => console.error('Error adding bookmark:', error));
+    } */
+
+    function openModalAndCloseAfterDelay(message, delay) {
+        openModal(message);
+        setTimeout(closeModal, delay);
+    }
+</script>
+{% endblock %}

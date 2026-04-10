@@ -39,6 +39,7 @@
             <button onclick="go_to_bookmark()"><i class="icon fas fa-bookmark"></i></button>
             <button onclick="go_to_radio()"><i class="icon fas fa-radio"></i></button>
             <button onclick="show_upload_form()" id="btn-upload" hidden><i class="icon fas fa-folder"></i></button>
+            <button onclick="go_to_music_library()" id="btn-music" hidden><i class="icon fas fa-music"></i></button>
             <button onclick="go_to_search()" id="btn-ytmusic" hidden><i class="icon fas fa-search"></i></button>
         </div>
     </div>
@@ -78,6 +79,7 @@
 
     var show_upload_button = available_features.upload_file;
     var show_ytmusic_button = available_features.ytmusic_search;
+    var show_music_catalog = available_features.music_dir;
 
     document.getElementById('urlForm').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -120,6 +122,11 @@
         document.getElementById('btn-ytmusic').hidden = false;
     };
 
+    // Show the music button
+    if (show_music_catalog) {
+        document.getElementById('btn-music').hidden = false;
+    };
+
     function control(action) {
         fetch(`/control/${action}`, { method: 'POST' })
             .then(response => response.json())
@@ -140,6 +147,10 @@
 
     function go_to_bookmark() {
         window.location.href = '/bookmark';
+    }
+
+    function go_to_music_library() {
+        window.location.href = '/music';
     }
 
     function show_playlist() {

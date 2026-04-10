@@ -23,6 +23,7 @@ parser.add_argument('--port', type=int, default=5000, help='Port to run the serv
 parser.add_argument('--auth', type=str, default=None, help='Initialize user credentials (format: username:password)')
 parser.add_argument('--allow-upload', action='store_true', help='Allow file upload (default: False)')
 parser.add_argument('--ytm-search', action='store_true', help='Enable ytmusic search (default: False)')
+parser.add_argument('--music-dir', type=str, default=None, help='Path to music directory (default: None)')
 
 args = parser.parse_args()
 
@@ -56,6 +57,11 @@ def require_auth_flag(f):
 def required_upload_flag(f):
     if '--allow-upload' in sys.argv:
         return app.route('/upload', methods=['POST'])(f)
+    return f
+
+def required_music_dir_flag(f):
+    if '--music-dir' in sys.argv:
+        return app.route('/music', methods=['GET'])(f)
     return f
 
 @require_auth_flag
@@ -113,7 +119,8 @@ def index():
 
     available_features = {
         'upload_file': '--allow-upload' in sys.argv,
-        'ytmusic_search': '--ytm-search' in sys.argv
+        'ytmusic_search': '--ytm-search' in sys.argv,
+        'music_dir': '--music-dir' in sys.argv
     }
 
     return render_template('index.html', btn_states=btn_states, available_features=available_features)
@@ -397,6 +404,67 @@ def delete_item_from_playlist(index):
 
     command = { "command": ["playlist-remove", str(index)] }
     response = send_mpv_command(ipc_path, command)
+
+    return jsonify(json.loads(response)['error'])
+
+@required_music_dir_flag
+@login_required
+def list_music_directories():
+    import pathlib
+
+    # Expand the user's home directory
+    music_dir = pathlib.Path(args.music_dir).expanduser()
+
+    # Get all directories in the music catalog
+    music_catalog = pathlib.Path(music_dir).glob('**/*')
+
+    # Filter: keep only directories that directly contain music files
+    music_catalog = [
+        {"name": music_dir.name, "path": music_dir.as_posix()}
+        for music_dir in music_catalog
+        if music_dir.is_dir() and any(
+            f.suffix.lower().lstrip('.') in ALLOWED_EXTENSIONS
+            for f in music_dir.iterdir()
+            if f.is_file()
+        )
+    ]
+
+    # render the template
+    return render_template('music.html', music_catalog=music_catalog)
+
+@app.route('/local/play/', methods=['POST'])
+@login_required
+def play_local_music():
+    global ipc_path
+    import pathlib
+
+    # Get the full path from the JSON request body
+    data = request.get_json()
+    path = data.get('path')
+
+    if not path:
+        return jsonify({'error': 'No path provided'}), 400
+
+    # Convert to POSIX path (handles backslashes on Windows)
+    path = pathlib.Path(path).as_posix()
+
+    # Iterare over all music files in the directory
+    directory = []
+    for music_file in pathlib.Path(path).iterdir():
+        if music_file.is_file() and music_file.suffix.lower().lstrip('.') in ALLOWED_EXTENSIONS:
+            directory.append(music_file.as_posix())
+
+    # Order by name
+    directory.sort()
+
+    # Stop current song
+    command = { "command": ["stop"] }
+    send_mpv_command(ipc_path, command)
+
+    # Load the files
+    for file in directory:
+        command = {"command": ["loadfile", file, "append-play"]}
+        response = send_mpv_command(ipc_path, command)
 
     return jsonify(json.loads(response)['error'])
 
