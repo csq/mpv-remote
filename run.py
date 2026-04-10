@@ -139,8 +139,8 @@ def upload_file():
     if not os.path.exists(UPLOAD_FOLDER):
         os.makedirs(UPLOAD_FOLDER)
 
-    # Get the files from the request
-    files = request.files.getlist("file")
+    # Get the files from the request, sort by name
+    files = sorted(request.files.getlist('file'), key=lambda x: x.filename)
 
     list_paths = []
 
