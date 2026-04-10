@@ -85,8 +85,7 @@
     function play_radio(name, url) {
         const encodedUrl = encodeURIComponent(url);
 
-        openModal("Playing radio: " + name);
-        closeModal(1000);
+        showModalAndHideAfterDelay("Playing radio: " + name, 1000);
 
         fetch(`/radio/play/${encodedUrl}`, { 
             method: 'POST',

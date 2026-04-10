@@ -85,8 +85,7 @@
     function play_bookmark(name, url) {
         const encodedUrl = encodeURIComponent(url);
 
-        openModal("Playing bookmark: " + name);
-        closeModal(1000);
+        showModalAndHideAfterDelay("Playing bookmark: " + name, 1000);
 
         fetch(`/bookmark/play/${encodedUrl}`, { 
             method: 'POST',

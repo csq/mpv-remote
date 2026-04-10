@@ -29,33 +29,39 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const modal = document.getElementById('modal');
-        const modalClose = modal.querySelector('.modal-close');
+        const modalElement = document.getElementById('modal');
+        const closeButton = modalElement.querySelector('.modal-close');
 
-        function openModal(message) {
-            const modalMessage = document.getElementById('modal-message');
-            modalMessage.innerHTML = message;
-            modal.classList.add('is-visible');
+        function showModal(message) {
+            const messageElement = document.getElementById('modal-message');
+            messageElement.innerHTML = message;
+            modalElement.classList.add('is-visible');
         }
 
-        function closeModal(lapseTime = 2000) {
-            setTimeout (() => {
-                modal.classList.remove('is-visible');
-            }, lapseTime);
+        function hideModal(delay = 2000) {
+            setTimeout(() => {
+                modalElement.classList.remove('is-visible');
+            }, delay);
         }
 
-        modalClose.addEventListener('click', closeModal);
+        closeButton.addEventListener('click', hideModal);
 
-        modal.addEventListener('click', (event) => {
-            if (event.target === modal) {
-                closeModal();
+        modalElement.addEventListener('click', (event) => {
+            if (event.target === modalElement) {
+                hideModal();
             }
         });
 
         // Expose functions to the global scope
-        window.openModal = openModal;
-        window.closeModal = closeModal;
+        window.showModal = showModal;
+        window.hideModal = hideModal;
     });
+
+    // Function to open a modal and close it after a delay
+    function showModalAndHideAfterDelay(message, delay) {
+        showModal(message);
+        setTimeout(hideModal, delay);
+    }
 
     function updateMediaInfo() {
         if (document.visibilityState === 'visible') {

@@ -43,7 +43,7 @@
     }
 
     function play_music(name, path) {
-        openModalAndCloseAfterDelay('Now playing: ' + name, 1000);
+        showModalAndHideAfterDelay('Playing: ' + name, 1000);
 
         fetch(`/local/play/`, {
             method: 'POST',
@@ -80,13 +80,8 @@
             body: JSON.stringify(bookmarkData)
         })
         .then(response => response.json())
-        .then(() => openModalAndCloseAfterDelay('Saved to bookmarks', 1000))
+        .then(() => showModalAndHideAfterDelay('Saved to bookmarks', 1000))
         .catch(error => console.error('Error adding bookmark:', error));
     } */
-
-    function openModalAndCloseAfterDelay(message, delay) {
-        openModal(message);
-        setTimeout(closeModal, delay);
-    }
 </script>
 {% endblock %}
