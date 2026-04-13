@@ -191,7 +191,7 @@
                                             <button onclick="delete_item_from_playlist('${index - 2}');" class="btn btn-danger btn-sm">
                                                 <i class="fas fa-trash">
                                             </i></button>
-                                            <button onclick="play_item_from_playlist('${ index - 2 }', '${item.title ? item.title.replace(/'/g, "\\'") : 'Unknown'}')" class="btn btn-primary btn-sm">
+                                            <button onclick="play_item_from_playlist('${index - 2}', '${(item.title ? item.title : fileName ? fileName: 'Unknown').replace(/'/g, "\\'")}');" class="btn btn-primary btn-sm">
                                                 <i class="fas fa-play"></i>
                                             </button>
                                         </div>
