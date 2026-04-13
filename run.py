@@ -433,6 +433,19 @@ def list_music_directories():
     # render the template
     return render_template('music.html', music_catalog=music_catalog)
 
+@login_required
+@app.route('/music/playlist', methods=['GET'])
+def list_music_files():
+    import pathlib
+
+    path = request.args.get('path', '')
+    music_dir = pathlib.Path(path).resolve()
+
+    files = [f.name for f in music_dir.iterdir() if f.is_file() and f.suffix.lower().lstrip('.') in ALLOWED_EXTENSIONS]
+    files.sort()
+
+    return jsonify({'files': files})
+
 @app.route('/local/play/', methods=['POST'])
 @login_required
 def play_local_music():
