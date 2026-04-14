@@ -93,11 +93,11 @@
                 const name = path.split('/').pop();
                 const headerTitle = '<h3>' + name + '</h3>';
 
-                const bodyContent = data['files'].map(file => file).join('\n');
+                const bodyContent = data['files'].map(file => file.replace(/^.*\s(\d{2}\s.*)$/, '$1')).join('\n');
 
                 const buttonPlay = `<button class="btn-play" onclick="play_music('${name}', '${path}')" style="border: 1px solid #fff; transition: background-color 0.3s ease;"><i class="fas fa-play"></i> Play</button>`;
 
-                showModal(`${headerTitle}${bodyContent}\n\n${buttonPlay}`);
+                showModal(`${headerTitle}<div style="text-align: left; padding: 0 20px; line-height: 1.5;">${bodyContent}</div>\n\n${buttonPlay}`);
             })
             .catch(error => console.error('Error:', error));
     }
