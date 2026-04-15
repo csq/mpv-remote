@@ -23,13 +23,13 @@
             <tr>
                 <td>{{ item.name }}</td>
                 <td>
-                    <button id="btn-playlist" onclick="view_playlist('{{ item.path }}')">
+                    <button id="btn-playlist" data-path="{{ item.path }}">
                         <i class="fas fa-list"></i>
                     </button>
-                    <button id="btn-bookmark" onclick="add_bookmark('{{ item.name }}', '{{ item.path }}');">
+                    <button id="btn-bookmark" data-name="{{ item.name }}" data-path="{{ item.path }}">
                         <i class="fas fa-bookmark"></i>
                     </button>
-                    <button id="btn-play" onclick="play_music('{{ item.name }}', '{{ item.path }}');">
+                    <button id="btn-play" data-name="{{ item.name }}" data-path="{{ item.path }}">
                         <i class="fas fa-play"></i>
                     </button>
                 </td>
@@ -41,6 +41,14 @@
     function go_to_back() {
         window.location.href = '/';
     }
+
+    document.querySelectorAll('#btn-play').forEach(button => {
+        button.addEventListener('click', () => {
+            const name = button.getAttribute('data-name');
+            const path = button.getAttribute('data-path');
+            play_music(name, path);
+        });
+    })
 
     function play_music(name, path) {
         showModalAndHideAfterDelay('Playing: ' + name, 1000);
@@ -66,6 +74,14 @@
         });
     }
 
+    document.querySelectorAll('#btn-bookmark').forEach(button => {
+        button.addEventListener('click', () => {
+            const name = button.getAttribute('data-name');
+            const path = button.getAttribute('data-path');
+            add_bookmark(name, path);
+        });
+    })
+
     function add_bookmark(title, path) {
         showModalAndHideAfterDelay('Saved to bookmarks', 1000);
 
@@ -84,6 +100,13 @@
         .then(response => response.json())
         .catch(error => console.error('Error adding bookmark:', error));
     }
+
+    document.querySelectorAll('#btn-playlist').forEach(button => {
+        button.addEventListener('click', () => {
+            const path = button.getAttribute('data-path');
+            view_playlist(path);
+        });
+    })
 
     function view_playlist(path) {
         const encodedPath = encodeURIComponent(path);

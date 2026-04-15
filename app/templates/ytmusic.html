@@ -42,10 +42,10 @@
                         <button id="btn-playlist" onclick="view_playlist('{{ item.browseId }}')">
                             <i class="fas fa-list"></i>
                         </button>
-                        <button id="btn-bookmark" onclick="save_to_bookmark('{{ item.artists[0].name }} - {{ item.title }} ({{ item.year }})', '{{ item.playlistId }}')">
+                        <button id="btn-bookmark" data-playlist-id="{{ item.playlistId }}" data-title="{{ item.title }}" data-year="{{ item.year }}" data-artist="{{ item.artists[0].name }}">
                             <i class="fas fa-bookmark"></i>
                         </button>
-                        <button id="btn-play" onclick="play_ytmusic('{{ item.playlistId }}', '{{ item.title }}')">
+                        <button id="btn-play" data-playlist-id="{{ item.playlistId }}" data-title="{{ item.title }}">
                             <i class="fas fa-play"></i>
                         </button>
                     </td>
@@ -56,6 +56,14 @@
     {% endif %}
 </div>
 <script>
+    document.querySelectorAll('#btn-play').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const playlistId = this.dataset.playlistId;
+            const title = this.dataset.title;
+            play_ytmusic(playlistId, title);
+        });
+    });
+
     function play_ytmusic(playlistId, title_album) {
         fetch(`ytmusic/play/${playlistId}`, { method: 'POST' })
             .then(response => response.json())
@@ -96,6 +104,17 @@
     function go_to_back() {
         window.location.href = '/';
     }
+
+    document.querySelectorAll('#btn-bookmark').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const playlistId = this.dataset.playlistId;
+            const title = this.dataset.title;
+            const year = this.dataset.year;
+            const artist = this.dataset.artist;
+            const bookmarkText = `${artist} - ${title} (${year})`;
+            save_to_bookmark(bookmarkText, playlistId);
+        });
+    })
 
     function save_to_bookmark(title, browseId) {
         fetch(`/bookmark/add/${title}/${browseId}`, { method: 'POST' })
