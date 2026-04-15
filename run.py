@@ -302,13 +302,26 @@ def play_bookmark(path):
 
     try:
         decoded_path = unquote(path) if path.startswith('http') else Path('/' + path).as_posix()
-        command = {"command": ["loadfile", decoded_path]}
 
-        # Check if socket exists before sending command
-        if not os.path.exists(ipc_path):
-            return jsonify({"status": "error", "message": "MPV socket not found"}), 500
+        if decoded_path.startswith('http'):
+            # Handle playlist URL
+            command = {"command": ["loadfile", decoded_path]}
+            send_mpv_command(ipc_path, command)
+            return jsonify({"status": "success", "path": decoded_path})
 
+        # List only music files in the directory
+        music_files = [file.as_posix() for file in Path(decoded_path).iterdir() if file.is_file() and file.suffix.lower().lstrip('.') in ALLOWED_EXTENSIONS]
+        music_files.sort()
+
+        # Stop current song
+        command = {"command": ["stop"]}
         send_mpv_command(ipc_path, command)
+
+        # Load the files
+        for path in music_files:
+            command = {"command": ["loadfile", path, "append-play"]}
+            send_mpv_command(ipc_path, command)
+
         return jsonify({"status": "success", "path": decoded_path})
 
     except Exception as e:
