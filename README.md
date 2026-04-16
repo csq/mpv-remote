@@ -42,6 +42,12 @@ This Flask-based web interfaz provides a comprehensive media control interface f
   - Upload media files to the server
   - Manage uploaded tracks in playlist
 
+- **Play Your Local Music**
+  - Browse your music library
+  - Create bookmarks
+  - Explore setlists
+  - Play albums
+
 - **Search Albums in YTMusic**
   - Search YTMusic catalog
   - View album details
@@ -91,6 +97,7 @@ The application supports the following command-line arguments to customize its b
 | `--auth` | string | None | **User authentication credentials** in the format `username:password`. When set, enables authentication for API requests. |
 | `--allow-upload` | boolean | False | **Enable file upload functionality.** Use this flag to allow users to upload media files to the server. |
 | `--ytm-search` | boolean | False | **Enable ytmusic search.** Enables YTMusic search. Users can search the YTMusic catalog. |
+| `--music-dir` | string | None | **Local music directory path.** Allows users to search and play their music library. |
 
 ## Running app
 #### Default
