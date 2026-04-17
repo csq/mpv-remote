@@ -118,9 +118,9 @@
 
                 const bodyContent = data['files'].map(file => file.replace(/^.*\s(\d{2}\s.*)$/, '$1')).join('\n');
 
-                const buttonPlay = `<button id="playlistButton" class="btn-play" data-path="${path}" data-name="${name}" style="border: 1px solid #fff; transition: background-color 0.3s ease;"><i class="fas fa-play"></i> Play</button>`;
+                const buttonPlay = `<button id="playlistButton" data-path="${path}" data-name="${name}"><i class="fas fa-play"></i> Play</button>`;
 
-                showModal(`${headerTitle}<div style="text-align: left; padding: 0 20px; line-height: 1.5;">${bodyContent}</div>\n\n${buttonPlay}`);
+                showModal(`${headerTitle}<div class="scrollable-list">${bodyContent}</div>\n\n${buttonPlay}`);
 
                 // Add event listener after the modal is rendered
                 document.getElementById('playlistButton').addEventListener('click', function() {

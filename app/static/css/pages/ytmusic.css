@@ -125,6 +125,26 @@
     box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
 }
 
+#playlistButton {
+    border-color: #ffffff;
+    border: 1px solid #ffffff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#playlistButton:hover {
+    background-color: #333;
+    transform: translateY(-2px);
+}
+
+.scrollable-list {
+    max-height: 40vh;
+    overflow-y: auto;
+    text-align: left;
+    padding: 0 20px;
+    line-height: 1.5;
+}
+
 /* Tablet & smaller screens */
 @media screen and (max-width: 768px) {
     #searchForm {
