@@ -91,9 +91,16 @@
                     .join('\n');
 
                 const audioPlaylistId = data.audioPlaylistId;
-                const buttonPlay = `<button class="btn-play" onclick="play_ytmusic('${audioPlaylistId}', '${data.title}'), hideModal(1)" style="border: 1px solid #fff; transition: background-color 0.3s ease;"><i class="fas fa-play"></i> Play</button>`;
+                const buttonPlay = `<button id="playlistButton" class="btn-play" data-playlist-id="${audioPlaylistId}" data-title="${data.title}" , hideModal(1)" style="border: 1px solid #fff; transition: background-color 0.3s ease;"><i class="fas fa-play"></i> Play</button>`;
 
                 showModal(`${headerTitle}\n\n ${headerImage}\n\n${metadata}\n\n<div style="text-align: left; padding: 0 20px; line-height: 1.5;">${bodyContent}</div>\n\n${buttonPlay}`);
+
+                // Add event listener after the modal is rendered
+                document.getElementById('playlistButton').addEventListener('click', function() {
+                    const btnName = this.getAttribute('data-playlist-id');
+                    const btnPath = this.getAttribute('data-title');
+                    play_ytmusic(btnName, btnPath);
+                });
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
