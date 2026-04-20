@@ -116,7 +116,11 @@
                 const name = path.split('/').pop();
                 const headerTitle = '<h3>' + name + '</h3>';
 
-                const bodyContent = data['files'].map(file => file.replace(/^.*\s(\d{2}\s.*)$/, '$1')).join('\n');
+                // Wrap each file name with the ellipsis class
+                const bodyContent = data['files'].map(file => {
+                    const cleanedName = file.replace(/^.*\s(\d{2}\s.*)$/, '$1');
+                    return `<div class="text-ellipsis">${cleanedName}</div>`;
+                }).join('');
 
                 const buttonPlay = `<button id="playlistButton" data-path="${path}" data-name="${name}"><i class="fas fa-play"></i> Play</button>`;
 

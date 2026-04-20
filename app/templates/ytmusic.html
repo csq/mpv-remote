@@ -86,9 +86,11 @@
                 const duration = data.duration;
                 const metadata = `Duration: ${duration}`;
 
-                const bodyContent = (data.tracks || [])
-                    .map(track => `${track.trackNumber || '?'}. ${track.title} (${track.duration})`)
-                    .join('\n');
+                // Wrap each file name with the ellipsis class
+                const bodyContent = (data.tracks || []).map(track => {
+                    const cleanedName = `${track.trackNumber || '?'}. ${track.title} (${track.duration})`
+                    return `<div class="text-ellipsis">${cleanedName}</div>`;
+                }).join('');
 
                 const audioPlaylistId = data.audioPlaylistId;
                 const buttonPlay = `<button id="playlistButton" data-playlist-id="${audioPlaylistId}" data-title="${data.title}", hideModal(1)"><i class="fas fa-play"></i> Play</button>`;
