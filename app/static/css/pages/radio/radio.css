@@ -26,12 +26,90 @@ table td {
     justify-content: center;
 }
 
-@media (max-width: 600px) {
+.action-cell {
+    position: relative;
+    white-space: nowrap;
+}
+
+/* Desktop view: show buttons */
+.buttons-desktop {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.btn-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 6px 8px;
+}
+
+/* Dropdown menu (hidden by default) */
+.action-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+}
+
+.action-menu.active {
+    display: flex;
+    flex-direction: column;
+    background-color: #f0f0f0;
+}
+
+.menu-item {
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-size: 14px;
+    transition: background-color 0.2s;
+    background-color: #f0f0f0;
+}
+
+.menu-item:active {
+    background-color: #ccc;
+}
+
+@media (max-width: 768px) {
     .stream-url {
         display: none;
     }
 
     .radio-item .btn {
         size-adjust: auto;
+    }
+
+    .buttons-desktop {
+        display: none;
+    }
+
+    .btn-menu-toggle {
+        display: inline-block;
+    }
+
+    /* Make the first column 90% width */
+    table th:first-child,
+    table td:first-child {
+        width: 90%;
+    }
+
+    /* Make the second column 10% width */
+    table th:nth-child(2),
+    table td:nth-child(2) {
+        width: 10%;
     }
 }

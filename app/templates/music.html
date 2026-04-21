@@ -22,16 +22,37 @@
         {% for item in music_catalog %}
             <tr>
                 <td>{{ item.name }}</td>
-                <td>
-                    <button id="btn-playlist" data-path="{{ item.path }}">
-                        <i class="fas fa-list"></i>
+                <td class="action-cell">
+                    <!-- Buttons visible on large screens -->
+                    <div class="buttons-desktop">
+                        <button id="btn-playlist" data-path="{{ item.path }}" title="Playlist">
+                            <i class="fas fa-list"></i>
+                        </button>
+                        <button id="btn-bookmark" data-name="{{ item.name }}" data-path="{{ item.path }}" title="Bookmark">
+                            <i class="fas fa-bookmark"></i>
+                        </button>
+                        <button id="btn-play" data-name="{{ item.name }}" data-path="{{ item.path }}" title="Play">
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </div>
+
+                    <!-- Menu toggle visible on small screens -->
+                    <button class="btn-menu-toggle" data-item-id="{{ loop.index }}">
+                        <i class="fas fa-ellipsis-v"></i>
                     </button>
-                    <button id="btn-bookmark" data-name="{{ item.name }}" data-path="{{ item.path }}">
-                        <i class="fas fa-bookmark"></i>
-                    </button>
-                    <button id="btn-play" data-name="{{ item.name }}" data-path="{{ item.path }}">
-                        <i class="fas fa-play"></i>
-                    </button>
+
+                    <!-- Dropdown menu for small screens -->
+                    <div class="action-menu" id="menu-{{ loop.index }}">
+                        <button class="menu-item btn-play" data-name="{{ item.name }}" data-path="{{ item.path }}">
+                            <i class="fas fa-play"></i> Play
+                        </button>
+                        <button class="menu-item btn-playlist" data-path="{{ item.path }}">
+                            <i class="fas fa-list"></i> Playlist
+                        </button>
+                        <button class="menu-item btn-bookmark" data-name="{{ item.name }}" data-path="{{ item.path }}">
+                            <i class="fas fa-bookmark"></i> Bookmark
+                        </button>
+                    </div>
                 </td>
             </tr>
         {% endfor %}
@@ -136,5 +157,65 @@
             .catch(error => console.error('Error:', error));
     }
 
+    document.addEventListener('DOMContentLoaded', function() {
+        // Handle menu toggle
+        document.querySelectorAll('.btn-menu-toggle').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const itemId = this.dataset.itemId;
+                const menu = document.getElementById('menu-' + itemId);
+
+                // Close other open menus
+                document.querySelectorAll('.action-menu.active').forEach(m => {
+                    if (m !== menu) m.classList.remove('active');
+                });
+
+                // Toggle current menu
+                menu.classList.toggle('active');
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.action-cell')) {
+                document.querySelectorAll('.action-menu.active').forEach(menu => {
+                    menu.classList.remove('active');
+                });
+            }
+        });
+
+        // Keep your existing button handlers - they'll work for both versions
+        document.querySelectorAll('.btn-playlist').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const path = this.dataset.path;
+                if (document.querySelector('.action-menu.active')) {
+                    document.querySelector('.action-menu.active').classList.remove('active');
+                }
+                view_playlist(path);
+            });
+        });
+
+        document.querySelectorAll('.btn-bookmark').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const name = this.dataset.name;
+                const path = this.dataset.path;
+                if (document.querySelector('.action-menu.active')) {
+                    document.querySelector('.action-menu.active').classList.remove('active');
+                }
+                add_bookmark(name, path);
+            });
+        });
+
+        document.querySelectorAll('.btn-play').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const name = this.dataset.name;
+                const path = this.dataset.path;
+                if (document.querySelector('.action-menu.active')) {
+                    document.querySelector('.action-menu.active').classList.remove('active');
+                }
+                play_music(name, path);
+            });
+        });
+    });
 </script>
 {% endblock %}

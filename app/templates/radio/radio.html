@@ -25,11 +25,32 @@
             <tr>              
                 <td>{{ item[1] }}</td>
                 <td class="stream-url">{{ item[2] }}</td>
-                <td>
-                    <div class="radio-item" data-radio-id="{{ item[0] }}">
-                        <button onclick="confirm_remove_radio('{{ item[0] }}');" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                        <button onclick="edit_radio('{{ item[0] }}')" class="btn btn-warning btn-sm"><i class="fas fa-pencil-alt"></i></button>
-                        <button data-name="{{ item[1] }}" data-path="{{ item[2] }}" class="btn btn-primary btn-sm btn-play"><i class="fas fa-play"></i></button>
+                <td class="action-cell">
+                    <!-- Buttons visible on large screens -->
+                    <div class="buttons-desktop">
+                        <div class="radio-item" data-radio-id="{{ item[0] }}">
+                            <button onclick="confirm_remove_radio('{{ item[0] }}');" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                            <button onclick="edit_radio('{{ item[0] }}')" class="btn btn-warning btn-sm"><i class="fas fa-pencil-alt"></i></button>
+                            <button data-name="{{ item[1] }}" data-path="{{ item[2] }}" class="btn btn-primary btn-sm btn-play"><i class="fas fa-play"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Menu toggle visible on small screens -->
+                    <button class="btn-menu-toggle" data-item-id="{{ loop.index }}">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+
+                    <!-- Dropdown menu for small screens -->
+                    <div class="action-menu" id="menu-{{ loop.index }}">
+                        <button class="menu-item btn-play" data-name="{{ item[1] }}" data-path="{{ item[2] }}">
+                            <i class="fas fa-play"></i> Play
+                        </button>
+                        <button class="menu-item btn-edit" onclick="edit_radio('{{ item[0] }}')">
+                            <i class="fas fa-pencil-alt"></i> Edit
+                        </button>
+                        <button class="menu-item btn-delete" onclick="confirm_remove_radio('{{ item[0] }}')">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
                     </div>
                 </td>
             </tr>
@@ -114,5 +135,44 @@
             console.error('Error playing radio:', error);
         });
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Handle menu toggle
+        document.querySelectorAll('.btn-menu-toggle').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const itemId = this.dataset.itemId;
+                const menu = document.getElementById('menu-' + itemId);
+
+                // Close other open menus
+                document.querySelectorAll('.action-menu.active').forEach(m => {
+                    if (m !== menu) m.classList.remove('active');
+                });
+
+                // Toggle current menu
+                menu.classList.toggle('active');
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.action-cell')) {
+                document.querySelectorAll('.action-menu.active').forEach(menu => {
+                    menu.classList.remove('active');
+                });
+            }
+        });
+
+        document.querySelectorAll('.btn-play').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const name = this.dataset.name;
+                const path = this.dataset.path;
+                if (document.querySelector('.action-menu.active')) {
+                    document.querySelector('.action-menu.active').classList.remove('active');
+                }
+                play_radio(name, path);
+            });
+        });
+    });
 </script>
 {% endblock %}

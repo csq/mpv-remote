@@ -180,26 +180,45 @@
                             // Get the file name without extension
                             const fileNameParts = item.filename.split('/').pop().split('.');
                             const fileName = fileNameParts.slice(0, -1).join(' ').replace(/_/g, ' ').replace(/^\d+[\s.\-]*/, '').split('-').pop();
+                            const displayTitle = (item.title ? item.title : fileName ? fileName: 'Unknown').replace(/'/g, "\\'");
 
                             const row = `
                                 <tr ${item.playing ? 'class="playing"' : ''}>
                                     <td>${(index++, item.playing ? '<i class="fas fa-volume-up"></i>' : index - 1)}</td>
                                     <td>${item.title ? item.title : fileName}</td>
                                     <td class="stream-url">${item.filename}</td>
-                                    <td>
-                                        <div class="playlist-item" data-playlist-id="${item.id}">
-                                            <button onclick="delete_item_from_playlist('${index - 2}');" class="btn btn-danger btn-sm">
-                                                <i class="fas fa-trash">
-                                            </i></button>
-                                            <button onclick="play_item_from_playlist('${index - 2}', '${(item.title ? item.title : fileName ? fileName: 'Unknown').replace(/'/g, "\\'")}');" class="btn btn-primary btn-sm">
+                                    <td class="action-cell">
+                                        <!-- Buttons visible on large screens -->
+                                        <div class="buttons-desktop">
+                                            <button onclick="delete_item_from_playlist('${index - 2}');" class="btn btn-danger btn-sm" title="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                            <button onclick="play_item_from_playlist('${index - 2}', '${displayTitle}');" class="btn btn-primary btn-sm" title="Play">
                                                 <i class="fas fa-play"></i>
+                                            </button>
+                                        </div>
+
+                                        <!-- Menu toggle visible on small screens -->
+                                        <button class="btn-menu-toggle" data-item-id="${item.id}">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+
+                                        <!-- Dropdown menu for small screens -->
+                                        <div class="action-menu" id="menu-${item.id}">
+                                            <button onclick="play_item_from_playlist('${index - 2}', '${displayTitle}');" class="menu-item btn-play">
+                                                <i class="fas fa-play"></i> Play
+                                            </button>
+                                            <button onclick="delete_item_from_playlist('${index - 2}');" class="menu-item btn-delete">
+                                                <i class="fas fa-trash"></i> Delete
                                             </button>
                                         </div>
                                     </td>
                                 </tr>
                             `;
                             tableBody.innerHTML += row;
-                        })
+                        });
+                        // Initialize menu toggles after DOM is updated
+                        initializeMenuToggles();
                     }
                 })
                 .catch(error => {
@@ -306,6 +325,36 @@
         childList: true,
         subtree: true
     });
+
+    function initializeMenuToggles() {
+        // Handle menu toggle
+        document.querySelectorAll('.btn-menu-toggle').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const itemId = this.dataset.itemId;
+                const menu = document.getElementById('menu-' + itemId);
+
+                // Close other open menus
+                document.querySelectorAll('.action-menu.active').forEach(m => {
+                    if (m !== menu) m.classList.remove('active');
+                });
+
+                // Toggle current menu
+                menu.classList.toggle('active');
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.action-cell')) {
+                document.querySelectorAll('.action-menu.active').forEach(menu => {
+                    menu.classList.remove('active');
+                });
+            }
+        });
+    }
+
+    initializeMenuToggles();
 
 </script>
 {% endblock %}
