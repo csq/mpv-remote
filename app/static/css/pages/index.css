@@ -144,37 +144,6 @@ button:active {
     font-weight: bold;
 }
 
-/* Tablet */
-@media (max-width: 900px) {
-    #url-form-container {
-        margin-top: 40%;
-    }
-
-    #playlistList tr td:nth-child(2) {
-        max-width: min-content;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-    }
-
-    .stream-url {
-        display: none;
-    }
-}
-
-/* Mobile */
-@media (min-width: 411px) {
-    .row {
-        width: 85%;
-    }
-}
-
-@media (min-width: 432px) {
-    .row {
-        width: 80%;
-    }
-}
-
 .action-cell {
     position: relative;
     white-space: nowrap;
@@ -235,6 +204,14 @@ button:active {
 
 /* Mobile view: hide buttons, show menu toggle */
 @media (max-width: 768px) {
+    #url-form-container {
+        margin-top: 40%;
+    }
+
+    .stream-url {
+        display: none;
+    }
+
     .buttons-desktop {
         display: none;
     }
@@ -243,4 +220,8 @@ button:active {
         display: inline-block;
     }
 
+    .row {
+        width: 75%;
+    }
 }
+

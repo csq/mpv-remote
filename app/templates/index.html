@@ -18,52 +18,50 @@
     </form>
 </div>
 
-<div class="container">
-    <div id="control-buttons">
-        <div class="row">
-            <button onclick="control('pause')" id="btn-pause" class="{% if btn_states.pause %}active{% endif %}"><i class="icon fas fa-pause"></i>Pause</button>
-            <button onclick="control('stop');"><i class="icon fas fa-stop"></i>Stop</button>
-            <button onclick="control('vol_plus')"><i class="icon fas fa-volume-up"></i>Vol +</button>
-            <button onclick="control('mute')" id="btn-mute" class="{% if btn_states.mute %}active{% endif %}"><i class="icon fas fa-volume-mute"></i>Mute</button>
-            <button onclick="control('vol_minus')"><i class="icon fas fa-volume-down"></i>Vol -</button>
-        </div>
-        <div class="row">
-            <button onclick="control('previous')"><i class="icon fas fa-backward"></i>Prev</button>
-            <button onclick="control('next')"><i class="icon fas fa-forward"></i>Next</button>
-        </div>
-        <div class="row">
-            <button onclick="control('repeat')" id="btn-repeat" class="{% if btn_states.repeat %}active{% endif %}"><i class="icon fas fa-repeat"></i>Repeat</button>
-            <button onclick="show_playlist()" id="btn-playlist"><i class="icon fas fa-list"></i>Playlist</button>
-        </div>
-        <div class="row">
-            <button onclick="go_to_bookmark()"><i class="icon fas fa-bookmark"></i></button>
-            <button onclick="go_to_radio()"><i class="icon fas fa-radio"></i></button>
-            <button onclick="show_upload_form()" id="btn-upload" hidden><i class="icon fas fa-folder"></i></button>
-            <button onclick="go_to_music_library()" id="btn-music" hidden><i class="icon fas fa-music"></i></button>
-            <button onclick="go_to_search()" id="btn-ytmusic" hidden><i class="icon fas fa-search"></i></button>
-        </div>
+<div id="control-buttons">
+    <div class="row">
+        <button onclick="control('pause')" id="btn-pause" class="{% if btn_states.pause %}active{% endif %}"><i class="icon fas fa-pause"></i>Pause</button>
+        <button onclick="control('stop');"><i class="icon fas fa-stop"></i>Stop</button>
+        <button onclick="control('vol_plus')"><i class="icon fas fa-volume-up"></i>Vol +</button>
+        <button onclick="control('mute')" id="btn-mute" class="{% if btn_states.mute %}active{% endif %}"><i class="icon fas fa-volume-mute"></i>Mute</button>
+        <button onclick="control('vol_minus')"><i class="icon fas fa-volume-down"></i>Vol -</button>
     </div>
-    <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data" hidden>
-        <input type="file" name="file" id="audioFile" accept="audio/*" multiple required>
-        <input type="checkbox" id="upload_folder" name="upload_folder">
-        <label for="upload_folder">Add folder</label>
-        <button type="submit" id="btn-upload"><i class="fas fa-cloud-upload-alt"></i> Upload</button>
-    </form>
-    <div id="playlist">
-        <h2>Playlist</h2>
-        <table id="playlistTable">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>NAME</th>
-                    <th class="stream-url">SOURCE</th>
-                    <th>ACTIONS</th>
-                </tr>
-            </thead>
-            <tbody id="playlistList">
-            </tbody>
-        </table>
+    <div class="row">
+        <button onclick="control('previous')"><i class="icon fas fa-backward"></i>Prev</button>
+        <button onclick="control('next')"><i class="icon fas fa-forward"></i>Next</button>
     </div>
+    <div class="row">
+        <button onclick="control('repeat')" id="btn-repeat" class="{% if btn_states.repeat %}active{% endif %}"><i class="icon fas fa-repeat"></i>Repeat</button>
+        <button onclick="show_playlist()" id="btn-playlist"><i class="icon fas fa-list"></i>Playlist</button>
+    </div>
+    <div class="row">
+        <button onclick="go_to_bookmark()"><i class="icon fas fa-bookmark"></i></button>
+        <button onclick="go_to_radio()"><i class="icon fas fa-radio"></i></button>
+        <button onclick="show_upload_form()" id="btn-upload" hidden><i class="icon fas fa-folder"></i></button>
+        <button onclick="go_to_music_library()" id="btn-music" hidden><i class="icon fas fa-music"></i></button>
+        <button onclick="go_to_search()" id="btn-ytmusic" hidden><i class="icon fas fa-search"></i></button>
+    </div>
+</div>
+<form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data" hidden>
+    <input type="file" name="file" id="audioFile" accept="audio/*" multiple required>
+    <input type="checkbox" id="upload_folder" name="upload_folder">
+    <label for="upload_folder">Add folder</label>
+    <button type="submit" id="btn-upload"><i class="fas fa-cloud-upload-alt"></i> Upload</button>
+</form>
+<div id="playlist">
+    <h2>Playlist</h2>
+    <table id="playlistTable">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>NAME</th>
+                <th class="stream-url">SOURCE</th>
+                <th>ACTIONS</th>
+            </tr>
+        </thead>
+        <tbody id="playlistList">
+        </tbody>
+    </table>
 </div>
 
 <script>
