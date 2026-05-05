@@ -20,6 +20,29 @@ table td {
     text-overflow: ellipsis;
 }
 
+.controls-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    max-width: 300px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    background-color: #1e1e1e;
+    color: #ffffff;
+}
+
+.btn-back {
+  flex-shrink: 0;
+}
+
 .radio-item {
     display: flex;
     align-items: center;
@@ -85,6 +108,31 @@ table td {
 }
 
 @media (max-width: 768px) {
+    .controls-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
+        gap: 10px;
+    }
+
+    .btn-back {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .search-input {
+        grid-column: 1 / 3;
+        grid-row: 2;
+        max-width: 90%;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .btn {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
     .stream-url {
         display: none;
     }

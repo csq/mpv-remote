@@ -10,8 +10,15 @@
 
 {% block body_content %}
 <h1>Radio</h1>
-<button onclick="go_to_back()"><i class="icon fas fa-angle-left"></i>Back</button>
-<button onclick="redirect_to_add_radio()" class="btn btn-success btn-sm">Add Radio <i class="fas fa-radio"></i></button>
+<div class="controls-container">
+  <button onclick="go_to_back()" class="btn-back">
+    <i class="icon fas fa-angle-left"></i>Back
+  </button>
+  <input class="search-input" type="text" id="searchInput" placeholder="Search by name" oninput="filterTable()">
+  <button onclick="redirect_to_add_radio()" class="btn btn-success btn-sm">
+    Add Radio <i class="fas fa-radio"></i>
+  </button>
+</div>
 <table id="radioTable">
     <thead>
         <tr>
@@ -174,5 +181,25 @@
             });
         });
     });
+
+    /* Filter the table */
+    function filterTable() {
+        const input = document.getElementById('searchInput');
+        const filter = input.value.toUpperCase();
+        const table = document.getElementById('radioTable');
+        const tr = table.getElementsByTagName('tr');
+
+        for (let i = 0; i < tr.length; i++) {
+            const td = tr[i].getElementsByTagName('td')[0];
+            if (td) {
+                const txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = '';
+                } else {
+                    tr[i].style.display = 'none';
+                }
+            }
+        }
+    }
 </script>
 {% endblock %}

@@ -20,6 +20,29 @@ table td {
     text-overflow: ellipsis;
 }
 
+.controls-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    max-width: 300px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    background-color: #1e1e1e;
+    color: #ffffff;
+}
+
+.btn-back {
+  flex-shrink: 0;
+}
+
 #btn-play {
     background-color: #333;
     color: #ffffff;
@@ -159,6 +182,10 @@ table td {
 }
 
 @media (max-width: 768px) {
+    .btn-back {
+        margin-bottom: 15px;
+    }
+
     .stream-path {
         display: none;
     }
