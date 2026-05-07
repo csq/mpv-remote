@@ -110,14 +110,6 @@
         window.location.href = `/bookmark/edit/${bookmark_id}`;
     }
 
-    document.querySelectorAll('.btn-play').forEach(button => {
-        button.addEventListener('click', () => {
-            const name = button.getAttribute('data-name');
-            const path = button.getAttribute('data-path');
-            play_bookmark(name, path);
-        });
-    })
-
     function play_bookmark(name, path) {
         const encodedPath = path.includes('http') ? encodeURIComponent(path) : path;
 
