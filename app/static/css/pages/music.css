@@ -29,18 +29,25 @@ table td {
 }
 
 .search-input {
-    max-width: 300px;
-    width: 100%;
+    margin-top: 10px;
+    width: 30%;
     padding: 10px;
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid #333;
     margin-bottom: 10px;
-    background-color: #1e1e1e;
+    background-color: #333;
+    text-align: center;
     color: #ffffff;
+}
+
+.search-input::placeholder {
+    color: #cccccc;
+    font-size: 14px;
 }
 
 .btn-back {
   flex-shrink: 0;
+  margin-left: 0;
 }
 
 #btn-play {
@@ -182,8 +189,13 @@ table td {
 }
 
 @media (max-width: 768px) {
+    .search-input {
+        margin-top: 10px;
+        width: 100%;
+    }
+
     .btn-back {
-        margin-bottom: 15px;
+        margin-bottom: 5px;
     }
 
     .stream-path {

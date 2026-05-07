@@ -8,74 +8,74 @@
 {% endblock %}
 
 {% block body_content %}
-<div id="search-form-container">
-    <h2>Search on YTMusic</h2>
+<h2>Search on YTMusic</h2>
+<div class="controls-container">
     <button onclick="go_to_back()"><i class="icon fas fa-angle-left"></i>Back</button>
     <form id="searchForm" action="/search" method="POST">
         <input type="string" id="searchInput" name="search" placeholder="Search by artist or title or album" required>
-        <button type="submit" id="btn-submit"><i class="fas fa-search"></i> Search</button>
     </form>
-    <div id="search-results"></div>
-    {% if data %}
-    <table id="searchTable">
-        <thead>
-            <tr>
-                <th>ARTIST</th>
-                <th>TITLE</th>
-                <th>YEAR</th>
-                <th>ACTIONS</th>
-            </tr>
-        </thead>
-        <tbody id="searchList">
-            {% for item in data %}
-                <tr>
-                    <td>
-                        {% if item.artists %}
-                            {% for artist in item.artists %}
-                                {{ artist.name }}{% if not loop.last %}, {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                    </td>
-                    <td>{{ item.title }}</td>
-                    <td>{{ item.year }}</td>
-                    <td class="action-cell">
-                        <!-- Buttons visible on large screens -->
-                        <div class="buttons-desktop">
-                            <button id="btn-playlist" onclick="view_playlist('{{ item.browseId }}')" title="Playlist">
-                                <i class="fas fa-list"></i>
-                            </button>
-                            <button id="btn-bookmark" data-playlist-id="{{ item.playlistId }}" data-title="{{ item.title }}" data-year="{{ item.year }}" data-artist="{{ item.artists[0].name }}" title="Bookmark">
-                                <i class="fas fa-bookmark"></i>
-                            </button>
-                            <button id="btn-play" data-playlist-id="{{ item.playlistId }}" data-title="{{ item.title }}" title="Play">
-                                <i class="fas fa-play"></i>
-                            </button>
-                        </div>
-
-                        <!-- Menu toggle visible on small screens -->
-                        <button class="btn-menu-toggle" data-item-id="{{ loop.index }}">
-                            <i class="fas fa-ellipsis-v"></i>
-                        </button>
-
-                        <!-- Dropdown menu for small screens -->
-                        <div class="action-menu" id="menu-{{ loop.index }}">
-                            <button class="menu-item btn-play" data-playlist-id="{{ item.playlistId }}" data-title="{{ item.title }}">
-                                <i class="fas fa-play"></i> Play
-                            </button>
-                            <button class="menu-item btn-playlist" onclick="view_playlist('{{ item.browseId }}')">
-                                <i class="fas fa-list"></i> Playlist
-                            </button>
-                            <button class="menu-item btn-bookmark" data-playlist-id="{{ item.playlistId }}" data-title="{{ item.title }}" data-year="{{ item.year }}" data-artist="{{ item.artists[0].name }}">
-                                <i class="fas fa-bookmark"></i> Bookmark
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% endif %}
 </div>
+<div id="search-results"></div>
+{% if data %}
+<table id="searchTable">
+    <thead>
+        <tr>
+            <th>ARTIST</th>
+            <th>TITLE</th>
+            <th>YEAR</th>
+            <th>ACTIONS</th>
+        </tr>
+    </thead>
+    <tbody id="searchList">
+        {% for item in data %}
+            <tr>
+                <td>
+                    {% if item.artists %}
+                        {% for artist in item.artists %}
+                            {{ artist.name }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </td>
+                <td>{{ item.title }}</td>
+                <td>{{ item.year }}</td>
+                <td class="action-cell">
+                    <!-- Buttons visible on large screens -->
+                    <div class="buttons-desktop">
+                        <button id="btn-playlist" onclick="view_playlist('{{ item.browseId }}')" title="Playlist">
+                            <i class="fas fa-list"></i>
+                        </button>
+                        <button id="btn-bookmark" data-playlist-id="{{ item.playlistId }}" data-title="{{ item.title }}" data-year="{{ item.year }}" data-artist="{{ item.artists[0].name }}" title="Bookmark">
+                            <i class="fas fa-bookmark"></i>
+                        </button>
+                        <button id="btn-play" data-playlist-id="{{ item.playlistId }}" data-title="{{ item.title }}" title="Play">
+                            <i class="fas fa-play"></i>
+                        </button>
+                    </div>
+
+                    <!-- Menu toggle visible on small screens -->
+                    <button class="btn-menu-toggle" data-item-id="{{ loop.index }}">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+
+                    <!-- Dropdown menu for small screens -->
+                    <div class="action-menu" id="menu-{{ loop.index }}">
+                        <button class="menu-item btn-play" data-playlist-id="{{ item.playlistId }}" data-title="{{ item.title }}">
+                            <i class="fas fa-play"></i> Play
+                        </button>
+                        <button class="menu-item btn-playlist" onclick="view_playlist('{{ item.browseId }}')">
+                            <i class="fas fa-list"></i> Playlist
+                        </button>
+                        <button class="menu-item btn-bookmark" data-playlist-id="{{ item.playlistId }}" data-title="{{ item.title }}" data-year="{{ item.year }}" data-artist="{{ item.artists[0].name }}">
+                            <i class="fas fa-bookmark"></i> Bookmark
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
 <script>
     document.querySelectorAll('#btn-play').forEach(btn => {
         btn.addEventListener('click', function() {
