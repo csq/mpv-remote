@@ -161,11 +161,9 @@ button:active {
     color: #000;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     .modal-content {
         max-width: 70%;
-        max-height: fit-content;
         padding: fit-content;
-        font-size: small;
     }
 }
