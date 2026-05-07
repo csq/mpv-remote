@@ -27,14 +27,13 @@ body {
 
 #media-title {
     width: 100%;
-    overflow: hidden;
+    overflow: auto;
+    display: inline-block;
     margin: 0;
     text-align: center;
-    display: inline-block;
-    white-space: nowrap;
     font-family: Arial, sans-serif;
+    font-style: italic;
     font-weight: bold;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     font-size: 15px;
     color: #ffffff;
 }
