@@ -255,8 +255,8 @@ def go_to_add_bookmark():
         return render_template('/bookmark/bookmark_form.html', edit_mode=False)
     elif request.method == 'POST':
         db = Database()
-        bookmark_name = request.get_json()['name']
-        bookmark_path = request.get_json()['path']
+        bookmark_name = request.form.get('name') or (request.get_json(silent=True) or {}).get('name')
+        bookmark_path = request.form.get('url') or (request.get_json(silent=True) or {}).get('path')
         db.insert_bookmark(bookmark_name, bookmark_path)
         return redirect(url_for('bookmark'))
 
