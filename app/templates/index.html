@@ -130,11 +130,12 @@
             .then(data => console.log(data))
             .catch(error => console.error('Error:', error));
 
-        const variableName = `btn_pressed_${action}`;
-
         const button = document.getElementById(`btn-${action}`);
-        button.classList.toggle('active');
+        if (button != null) {
+            button.classList.toggle('active');
+        }
 
+        const variableName = `btn_pressed_${action}`;
         window[variableName] = !window[variableName];
     }
 
