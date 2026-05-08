@@ -18,16 +18,18 @@ button {
 .form-container input {
     padding: 10px;
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid #333;
     width: 90%;
     margin-bottom: 10px;
+    background-color: #333;
+    color: #ffffff;
 }
 
 .form-container button {
     background-color: #28a745;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     .form-container {
         width: 80%;
     }
