@@ -38,11 +38,16 @@ table td {
     background-color: #333;
     text-align: center;
     color: #ffffff;
+    outline: none;
 }
 
 .search-input::placeholder {
     color: #cccccc;
     font-size: 14px;
+}
+
+.search-input:focus {
+    border-color: #ffffff;
 }
 
 .btn-back {

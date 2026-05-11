@@ -30,6 +30,10 @@ input[type="url"]::placeholder {
     color: #cccccc;
 }
 
+input[type="url"]:focus {
+    border-color: #ffffff;
+}
+
 button {
     padding: 10px 15px;
     border: none;

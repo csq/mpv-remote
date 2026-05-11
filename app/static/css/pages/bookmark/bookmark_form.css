@@ -23,6 +23,15 @@ button {
     margin-bottom: 10px;
     background-color: #333;
     color: #ffffff;
+    outline: none;
+}
+
+.form-container input::placeholder {
+    color: #cccccc;
+}
+
+.form-container :focus {
+    border-color: #ffffff;
 }
 
 .form-container button {

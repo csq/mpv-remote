@@ -23,13 +23,22 @@ button {
     margin-bottom: 10px;
     background-color: #333;
     color: #ffffff;
+    outline: none;
+}
+
+.form-container input::placeholder {
+    color: #cccccc;
+}
+
+.form-container :focus {
+    border-color: #ffffff;
 }
 
 .form-container button {
     background-color: #28a745;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     .form-container {
         width: 80%;
     }
