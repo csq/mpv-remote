@@ -206,18 +206,18 @@
 }
 
 /* Tablet & smaller screens */
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) {
     #searchForm {
         width: 80%;
     }
 
-    #searchTable th, #searchTable td {
+    #searchTable th:nth-child(-n+2),
+    #searchTable td:nth-child(-n+2) {
         padding: 8px;
-    }
-
-    #btn-play, #btn-bookmark, #btn-playlist {
-        margin-inline-end: 5px;
-        size-adjust: auto;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 90px;
+        width: auto;
     }
 
     .buttons-desktop {
@@ -226,21 +226,5 @@
 
     .btn-menu-toggle {
         display: inline-block;
-    }
-}
-
-/* Mobile */
-@media screen and (max-width: 480px) {
-    #searchForm {
-        width: 100%;
-    }
-
-    #searchTable th, #searchTable td {
-        padding: 5px;
-    }
-
-    #btn-play, #btn-bookmark, #btn-playlist {
-        margin-inline-end: 5px;
-        size-adjust: auto;
     }
 }
