@@ -89,7 +89,7 @@
         fetch(`ytmusic/play/${playlistId}`, { method: 'POST' })
             .then(response => response.json())
             .then(data => {
-                showModalAndHideAfterDelay("Playing: " + title_album, 3000);
+                showModalAndHideAfterDelay("Playing: " + title_album, 1000);
             })
             .catch(error => console.error('Error:', error));
     }

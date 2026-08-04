@@ -89,7 +89,7 @@
         document.getElementById('urlInput').value = '';
 
         // Modal stuff
-        showModalAndHideAfterDelay("Playing: " + url, 3000);
+        showModalAndHideAfterDelay("Playing: " + url, 1000);
 
         // Send the URL to the server
         fetch('/playing', {
@@ -232,7 +232,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data == 'success') {
-                    showModalAndHideAfterDelay("Playing: " + title, 3000);
+                    showModalAndHideAfterDelay("Playing: " + title, 1000);
                 }
             })
             .catch(error => console.error('Error:', error));
