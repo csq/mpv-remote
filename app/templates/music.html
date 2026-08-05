@@ -14,29 +14,31 @@
   <button onclick="go_to_back()" class="btn-back">
     <i class="icon fas fa-angle-left"></i>Back
   </button>
-  <input class="search-input" type="text" id="searchInput" placeholder="Search by name" oninput="filterTable()">
+  <input class="search-input" type="text" id="searchInput" placeholder="Search by artist or album" oninput="filterTable()">
 </div>
 <table id="musicTable">
     <thead>
         <tr>
-            <th>NAME</th>
+            <th>ARTIST</th>
+            <th>ALBUM</th>
             <th>ACTIONS</th>
         </tr>
     </thead>
     <tbody id="musicList">
         {% for item in music_catalog %}
             <tr>
-                <td>{{ item.name }}</td>
+                <td class="artist-cell">{{ item.artist }}</td>
+                <td>{{ item.album }}</td>
                 <td class="action-cell">
                     <!-- Buttons visible on large screens -->
                     <div class="buttons-desktop">
                         <button id="btn-playlist" data-path="{{ item.path }}" title="Playlist">
                             <i class="fas fa-list"></i>
                         </button>
-                        <button id="btn-bookmark" data-name="{{ item.name }}" data-path="{{ item.path }}" title="Bookmark">
+                        <button id="btn-bookmark" data-album="{{ item.album }}" data-path="{{ item.path }}" title="Bookmark">
                             <i class="fas fa-bookmark"></i>
                         </button>
-                        <button id="btn-play" data-name="{{ item.name }}" data-path="{{ item.path }}" title="Play">
+                        <button id="btn-play" data-album="{{ item.album }}" data-path="{{ item.path }}" title="Play">
                             <i class="fas fa-play"></i>
                         </button>
                     </div>
@@ -48,13 +50,13 @@
 
                     <!-- Dropdown menu for small screens -->
                     <div class="action-menu" id="menu-{{ loop.index }}">
-                        <button class="menu-item btn-play" data-name="{{ item.name }}" data-path="{{ item.path }}">
+                        <button class="menu-item btn-play" data-album="{{ item.album }}" data-path="{{ item.path }}">
                             <i class="fas fa-play"></i> Play
                         </button>
                         <button class="menu-item btn-playlist" data-path="{{ item.path }}">
                             <i class="fas fa-list"></i> Playlist
                         </button>
-                        <button class="menu-item btn-bookmark" data-name="{{ item.name }}" data-path="{{ item.path }}">
+                        <button class="menu-item btn-bookmark" data-album="{{ item.album }}" data-path="{{ item.path }}">
                             <i class="fas fa-bookmark"></i> Bookmark
                         </button>
                     </div>
@@ -70,7 +72,7 @@
 
     document.querySelectorAll('#btn-play').forEach(button => {
         button.addEventListener('click', () => {
-            const name = button.getAttribute('data-name');
+            const name = button.getAttribute('data-album');
             const path = button.getAttribute('data-path');
             play_music(name, path);
         });
@@ -102,7 +104,7 @@
 
     document.querySelectorAll('#btn-bookmark').forEach(button => {
         button.addEventListener('click', () => {
-            const name = button.getAttribute('data-name');
+            const name = button.getAttribute('data-album');
             const path = button.getAttribute('data-path');
             add_bookmark(name, path);
         });
@@ -148,13 +150,13 @@
                     return `<div class="text-ellipsis">${cleanedName}</div>`;
                 }).join('');
 
-                const buttonPlay = `<button id="playlistButton" data-path="${path}" data-name="${name}"><i class="fas fa-play"></i> Play</button>`;
+                const buttonPlay = `<button id="playlistButton" data-path="${path}" data-album="${name}"><i class="fas fa-play"></i> Play</button>`;
 
                 showModal(`${headerTitle}<div class="scrollable-list">${bodyContent}</div>\n\n${buttonPlay}`);
 
                 // Add event listener after the modal is rendered
                 document.getElementById('playlistButton').addEventListener('click', function() {
-                    const btnName = this.getAttribute('data-name');
+                    const btnName = this.getAttribute('data-album');
                     const btnPath = this.getAttribute('data-path');
                     play_music(btnName, btnPath);
                 });
@@ -202,7 +204,7 @@
 
         document.querySelectorAll('.btn-bookmark').forEach(btn => {
             btn.addEventListener('click', function() {
-                const name = this.dataset.name;
+                const name = this.dataset.album;
                 const path = this.dataset.path;
                 if (document.querySelector('.action-menu.active')) {
                     document.querySelector('.action-menu.active').classList.remove('active');
@@ -213,7 +215,7 @@
 
         document.querySelectorAll('.btn-play').forEach(btn => {
             btn.addEventListener('click', function() {
-                const name = this.dataset.name;
+                const name = this.dataset.album;
                 const path = this.dataset.path;
                 if (document.querySelector('.action-menu.active')) {
                     document.querySelector('.action-menu.active').classList.remove('active');
@@ -230,17 +232,62 @@
         const table = document.getElementById('musicTable');
         const tr = table.getElementsByTagName('tr');
 
+        // Step 1: Show or hide rows based on search match
         for (let i = 0; i < tr.length; i++) {
-            const td = tr[i].getElementsByTagName('td')[0];
-            if (td) {
-                const txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = '';
+            const td_cell_artist = tr[i].getElementsByTagName('td')[0];
+            const td_cell_album = tr[i].getElementsByTagName('td')[1];
+
+            if (td_cell_artist && td_cell_album) {
+                const txtValueArtist = td_cell_artist.textContent || td_cell_artist.innerText;
+                const txtValueAlbum = td_cell_album.textContent || td_cell_album.innerText;
+
+                if (txtValueArtist.toUpperCase().indexOf(filter) > -1 || txtValueAlbum.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = ''; // Show row
                 } else {
-                    tr[i].style.display = 'none';
+                    tr[i].style.display = 'none'; // Hide row
                 }
+
+                // Clean up class from the CELL before recalculating
+                td_cell_artist.classList.remove('hide-duplicate');
+                // Also remove border from all cells
+                td_cell_artist.style.borderBottom = '';
+            }
+        }
+
+        // Step 2: Recalculate duplicates ONLY among visually visible rows
+        let previousArtistValue = "";
+        let lastVisibleRow = null;
+
+        for (let i = 0; i < tr.length; i++) {
+            // Skip hidden rows
+            if (tr[i].style.display === 'none') continue;
+
+            const td_cell_artist = tr[i].getElementsByTagName('td')[0];
+            if (td_cell_artist) {
+                const currentArtistValue = td_cell_artist.textContent.trim();
+
+                if (currentArtistValue === previousArtistValue) {
+                    // Add class to the CELL, not the row
+                    td_cell_artist.classList.add('hide-duplicate');
+                } else {
+                    previousArtistValue = currentArtistValue;
+                }
+
+                lastVisibleRow = tr[i]; // Track the last visible row
+            }
+        }
+
+        // Step 3: Add border to the last visible row
+        if (lastVisibleRow) {
+            const lastCell = lastVisibleRow.getElementsByTagName('td')[0];
+            if (lastCell) {
+                lastCell.style.borderBottom = '1px solid #333';
             }
         }
     }
+
+    // Call the filterTable function initially
+    filterTable();
+
 </script>
 {% endblock %}

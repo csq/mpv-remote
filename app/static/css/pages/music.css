@@ -134,6 +134,19 @@ table td {
     line-height: 1.5;
 }
 
+.artist-cell {
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-bottom: none;
+}
+
+.hide-duplicate {
+  visibility: hidden;
+  border: none;
+  border-left: 1px solid #333;
+}
+
 .action-cell {
     position: relative;
     white-space: nowrap;

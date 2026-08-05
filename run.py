@@ -434,7 +434,7 @@ def list_music_directories():
 
     # Filter: keep only directories that directly contain music files
     music_catalog = [
-        {"name": music_dir.name, "path": music_dir.as_posix()}
+        {"artist": music_dir.relative_to(args.music_dir).parts[0], "album": music_dir.name, "path": music_dir.as_posix()}
         for music_dir in music_catalog
         if music_dir.is_dir() and any(
             f.suffix.lower().lstrip('.') in ALLOWED_EXTENSIONS
@@ -442,6 +442,9 @@ def list_music_directories():
             if f.is_file()
         )
     ]
+
+    # Order by parent directory (artist)
+    music_catalog.sort(key=lambda x: x["artist"])
 
     # render the template
     return render_template('music.html', music_catalog=music_catalog)
