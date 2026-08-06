@@ -580,14 +580,22 @@ def page_not_found(error):
     return redirect(url_for('index'))
 
 def send_mpv_command(ipc_path, command):
+    msg = json.dumps(command).encode('utf-8') + b'\n'
+
     try:
-        with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as sock:
-            sock.connect(ipc_path)
+        with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as s:
+            s.connect(ipc_path)
+            s.sendall(msg)
 
-            json_command = json.dumps(command) + '\n'
-            sock.sendall(json_command.encode('utf-8'))
+            # Read until newline so we get the full JSON response
+            data = b''
+            while b'\n' not in data:
+                chunk = s.recv(4096)
+                if not chunk:
+                    break
+                data += chunk
 
-            response = sock.recv(4096).decode('utf-8')
+            response = data.decode('utf-8').strip()
             return response
     except (socket.error, IOError) as e:
         print(f"Error sending command to MPV: {e}")
