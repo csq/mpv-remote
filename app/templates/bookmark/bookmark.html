@@ -39,6 +39,7 @@
                             <button onclick="confirm_remove_bookmark('{{ item[0] }}');" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
                             <button onclick="edit_bookmark('{{ item[0] }}')" class="btn btn-warning btn-sm"><i class="fas fa-pencil-alt"></i></button>
                             <button data-name="{{ item[1] }}" data-path="{{ item[2] }}" class="btn btn-primary btn-sm btn-play"><i class="fas fa-play"></i></button>
+                            <button data-name="{{ item[1] }}" data-path="{{ item[2] }}" class="btn btn-playlist btn-sm btn-add-playlist"><i class="fas fa-plus"></i></button>
                         </div>
                     </div>
 
@@ -57,6 +58,9 @@
                         </button>
                         <button class="menu-item btn-delete" onclick="confirm_remove_bookmark('{{ item[0] }}')">
                             <i class="fas fa-trash"></i> Delete
+                        </button>
+                        <button class="menu-item btn-add-playlist" data-name="{{ item[1] }}" data-path="{{ item[2] }}">
+                            <i class="fas fa-plus"></i> Add to Playlist
                         </button>
                     </div>
                 </td>
@@ -135,6 +139,31 @@
         });
     }
 
+    function add_to_playlist(name, path) {
+        const encodedPath = path.includes('http') ? encodeURIComponent(path) : path;
+
+        showModalAndHideAfterDelay("Added to playlist: " + name, 1000);
+
+        fetch(`/playlist/add/${encodedPath}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('bookmark added to playlist successful:', data);
+        })
+        .catch(error => {
+            console.error('Error adding bookmark to playlist:', error);
+        });
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         // Handle menu toggle
         document.querySelectorAll('.btn-menu-toggle').forEach(button => {
@@ -170,6 +199,17 @@
                     document.querySelector('.action-menu.active').classList.remove('active');
                 }
                 play_bookmark(name, path);
+            });
+        });
+
+        document.querySelectorAll('.btn-add-playlist').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const name = this.dataset.name;
+                const path = this.dataset.path;
+                if (document.querySelector('.action-menu.active')) {
+                    document.querySelector('.action-menu.active').classList.remove('active');
+                }
+                add_to_playlist(name, path);
             });
         });
     });

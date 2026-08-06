@@ -41,6 +41,9 @@
                         <button id="btn-play" data-album="{{ item.album }}" data-path="{{ item.path }}" title="Play">
                             <i class="fas fa-play"></i>
                         </button>
+                        <button id="btn-add-playlist" data-album="{{ item.album }}" data-path="{{ item.path }}" title="Add to Playlist">
+                            <i class="fas fa-plus"></i>
+                        </button>
                     </div>
 
                     <!-- Menu toggle visible on small screens -->
@@ -58,6 +61,9 @@
                         </button>
                         <button class="menu-item btn-bookmark" data-album="{{ item.album }}" data-path="{{ item.path }}">
                             <i class="fas fa-bookmark"></i> Bookmark
+                        </button>
+                        <button class="menu-item btn-add-playlist" data-album="{{ item.album }}" data-path="{{ item.path }}">
+                            <i class="fas fa-plus"></i> Add to Playlist
                         </button>
                     </div>
                 </td>
@@ -164,6 +170,35 @@
             .catch(error => console.error('Error:', error));
     }
 
+    document.querySelectorAll('#btn-add-playlist').forEach(button => {
+        button.addEventListener('click', () => {
+            const name = button.getAttribute('data-album');
+            const path = button.getAttribute('data-path');
+            add_to_playlist(name, path);
+        });
+    })
+
+    function add_to_playlist(title, path) {
+        showModalAndHideAfterDelay('Added to playlist: ' + title, 1000);
+
+        fetch('/playlist/add/' + encodeURIComponent(path), {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch(error => console.error('Error adding to playlist:', error));
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         // Handle menu toggle
         document.querySelectorAll('.btn-menu-toggle').forEach(button => {
@@ -221,6 +256,17 @@
                     document.querySelector('.action-menu.active').classList.remove('active');
                 }
                 play_music(name, path);
+            });
+        });
+
+        document.querySelectorAll('.btn-add-playlist').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const name = this.dataset.album;
+                const path = this.dataset.path;
+                if (document.querySelector('.action-menu.active')) {
+                    document.querySelector('.action-menu.active').classList.remove('active');
+                }
+                add_to_playlist(name, path);
             });
         });
     });

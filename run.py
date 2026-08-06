@@ -411,6 +411,38 @@ def play_item_from_playlist(index):
 
     return jsonify(json.loads(response)['error'])
 
+@app.route('/playlist/add/<path:path>', methods=['POST'])
+@login_required
+def add_item_to_playlist(path):
+    from pathlib import Path
+    global ipc_path
+
+    decoded_path = unquote(path) if path.startswith('http') else Path('/' + path).as_posix()
+
+    if decoded_path.startswith('http'):
+        # Handle playlist URL
+        command = {"command": ["loadfile", decoded_path, "append-play"]}
+        send_mpv_command(ipc_path, command)
+        return jsonify({"status": "success", "path": decoded_path})
+
+    # List only music files in the directory
+    music_files = [file.as_posix() for file in Path(decoded_path).iterdir() if file.is_file() and file.suffix.lower().lstrip('.') in ALLOWED_EXTENSIONS]
+    music_files.sort()
+
+    # Load the files
+    for path in music_files:
+        command = { "command": ["loadfile", path, "append-play"] }
+        response = send_mpv_command(ipc_path, command)
+
+    # Parse the response and return proper JSON
+    parsed_response = json.loads(response)
+
+    return jsonify({
+        'success': parsed_response.get('error') == 'success',
+        'error': parsed_response.get('error'),
+        'message': 'Item added to playlist'
+    })
+
 @app.route('/playlist/delete/<int:index>', methods=['POST'])
 @login_required
 def delete_item_from_playlist(index):

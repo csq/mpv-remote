@@ -100,6 +100,12 @@ button:active {
     border-color: #007bff;
 }
 
+.btn-playlist {
+    background-color: slateblue;
+    color: #fff;
+    border-color: slateblue;
+}
+
 .modal {
     display: none;
     position: fixed;
