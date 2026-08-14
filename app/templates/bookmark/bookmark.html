@@ -15,7 +15,7 @@
     <i class="icon fas fa-angle-left"></i>Back
   </button>
   <input class="search-input" type="text" id="searchInput" placeholder="Search by name" oninput="filterTable()">
-  <button onclick="redirect_to_add_bookmark()" class="btn btn-success btn-sm">
+  <button onclick="redirect_to_add_bookmark()" class="btn-success btn-sm">
     Add Bookmark <i class="fas fa-bookmark"></i>
   </button>
 </div>
@@ -36,10 +36,10 @@
                     <!-- Buttons visible on large screens -->
                     <div class="buttons-desktop">
                         <div class="bookmark-item" data-bookmark-id="{{ item[0] }}">
-                            <button onclick="confirm_remove_bookmark('{{ item[0] }}');" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                            <button onclick="edit_bookmark('{{ item[0] }}')" class="btn btn-warning btn-sm"><i class="fas fa-pencil-alt"></i></button>
-                            <button data-name="{{ item[1] }}" data-path="{{ item[2] }}" class="btn btn-primary btn-sm btn-play"><i class="fas fa-play"></i></button>
-                            <button data-name="{{ item[1] }}" data-path="{{ item[2] }}" class="btn btn-playlist btn-sm btn-add-playlist"><i class="fas fa-plus"></i></button>
+                            <button onclick="confirm_remove_bookmark('{{ item[0] }}');" class="btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                            <button onclick="edit_bookmark('{{ item[0] }}')" class="btn-warning btn-sm"><i class="fas fa-pencil-alt"></i></button>
+                            <button data-name="{{ item[1] }}" data-path="{{ item[2] }}" class="btn-primary btn-sm btn-play"><i class="fas fa-play"></i></button>
+                            <button data-name="{{ item[1] }}" data-path="{{ item[2] }}" class="btn-secondary btn-sm btn-add-playlist"><i class="fas fa-plus"></i></button>
                         </div>
                     </div>
 

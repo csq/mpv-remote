@@ -75,6 +75,12 @@ button:active {
     font-size: 14px;
 }
 
+.btn-sm:hover {
+    background-color: #333;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
 .btn-success {
     background-color: #28a745;
     color: #fff;
@@ -88,10 +94,22 @@ button:active {
     border-color: #dc3545;
 }
 
+.btn-danger:hover {
+    background-color: #dc3545;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
 .btn-warning {
     background-color: #ffc107;
     color: #fff;
     border-color: #ffc107;
+}
+
+.btn-warning:hover {
+    background-color: #ffc107;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
 }
 
 .btn.primary {
@@ -100,10 +118,21 @@ button:active {
     border-color: #007bff;
 }
 
-.btn-playlist {
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+.btn-secondary {
     background-color: slateblue;
     color: #fff;
     border-color: slateblue;
+}
+
+.btn-secondary:hover {
+    background-color: slateblue;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
 }
 
 .modal {

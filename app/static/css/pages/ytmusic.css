@@ -155,7 +155,6 @@
 /* Desktop view: show buttons */
 .buttons-desktop {
     display: flex;
-    gap: 8px;
     justify-content: center;
 }
 
