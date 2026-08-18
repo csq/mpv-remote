@@ -216,11 +216,21 @@ def search_ytmusic():
 
     search_query = request.form['search']
     ytmusic = YTMusic()
+
     results = ytmusic.search(
         search_query, filter="albums", ignore_spelling=True
     )
 
-    return render_template('ytmusic.html', data=results)
+    # Sort by artist name and year
+    sorted_results = sorted(
+         results,
+         key=lambda x: (
+             x['artists'][0]['name'] if x.get('artists') else '',
+             x.get('year', 0)
+         )
+    )
+
+    return render_template('ytmusic.html', data=sorted_results)
 
 @app.route('/ytmusic/play/<string:playlistId>', methods=['POST'])
 @login_required
