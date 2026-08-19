@@ -50,6 +50,9 @@
                         <button id="btn-play" data-playlist-id="{{ item.playlistId }}" data-title="{{ item.title }}" title="Play">
                             <i class="fas fa-play"></i>
                         </button>
+                        <button id="btn-add-playlist" data-title="{{ item.title }}" data-playlist-id="{{ item.playlistId }}" title="Add to Playlist">
+                            <i class="fas fa-plus"></i>
+                        </button>
                     </div>
 
                     <!-- Menu toggle visible on small screens -->
@@ -67,6 +70,9 @@
                         </button>
                         <button class="menu-item btn-bookmark" data-playlist-id="{{ item.playlistId }}" data-title="{{ item.title }}" data-year="{{ item.year }}" data-artist="{{ item.artists[0].name }}">
                             <i class="fas fa-bookmark"></i> Bookmark
+                        </button>
+                        <button class="menu-item btn-add-playlist" data-title="{{ item.title }}" data-playlist-id="{{ item.playlistId }}">
+                            <i class="fas fa-plus"></i> Add to Playlist
                         </button>
                     </div>
                 </td>
@@ -155,6 +161,37 @@
             .catch(error => console.error('Error:', error));
     }
 
+    document.querySelectorAll('#btn-add-playlist').forEach(button => {
+        button.addEventListener('click', () => {
+            const title = button.getAttribute('data-title');
+            const playlistId = button.getAttribute('data-playlist-id');
+
+            add_to_playlist(title, playlistId);
+        });
+    })
+
+    function add_to_playlist(title, playlistId) {
+        showModalAndHideAfterDelay('Added to playlist: ' + title, 1000);
+        const url = `https://music.youtube.com/playlist?list=${playlistId}`
+
+        fetch('/playlist/add/' + encodeURIComponent(url), {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch(error => console.error('Error adding to playlist:', error));
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         // Handle menu toggle
         document.querySelectorAll('.btn-menu-toggle').forEach(button => {
@@ -204,6 +241,17 @@
                     document.querySelector('.action-menu.active').classList.remove('active');
                 }
                 play_ytmusic(playlistId, name);
+            });
+        });
+
+        document.querySelectorAll('.btn-add-playlist').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const title = this.dataset.title;
+                const playlistId = this.dataset.playlistId;
+                if (document.querySelector('.action-menu.active')) {
+                    document.querySelector('.action-menu.active').classList.remove('active');
+                }
+                add_to_playlist(title, playlistId);
             });
         });
     });

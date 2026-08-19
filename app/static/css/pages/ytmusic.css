@@ -133,6 +133,23 @@
     transform: translateY(-2px);
 }
 
+#btn-add-playlist {
+    background-color: slateblue;
+    color: #ffffff;
+    border-radius: 10px;
+    border: none;
+    padding: 5px 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+}
+
+#btn-add-playlist:hover {
+    background-color: slateblue;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
 .text-ellipsis {
   white-space: nowrap;
   overflow: hidden;
