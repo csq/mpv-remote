@@ -29,7 +29,7 @@
     <tbody id="searchList">
         {% for item in data %}
             <tr>
-                <td>
+                <td class="artist-cell">
                     {% if item.artists %}
                         {% for artist in item.artists %}
                             {{ artist.name }}{% if not loop.last %}, {% endif %}
@@ -255,6 +255,52 @@
             });
         });
     });
+
+    /* Group rows by artist name */
+    function groupByArtist() {
+        const table = document.getElementById('searchTable');
+        const tr = table.getElementsByTagName('tr');
+
+        // Step 1: Clean up all previous grouping classes and styles
+        for (let i = 0; i < tr.length; i++) {
+            const td_cell_artist = tr[i].getElementsByTagName('td')[0];
+            if (td_cell_artist) {
+                td_cell_artist.classList.remove('hide-duplicate');
+                td_cell_artist.style.borderBottom = '';
+            }
+        }
+
+        // Step 2: Group duplicate artists and hide redundant artist names
+        let previousArtistValue = "";
+        let lastVisibleRow = null;
+
+        for (let i = 0; i < tr.length; i++) {
+            const td_cell_artist = tr[i].getElementsByTagName('td')[0];
+            if (td_cell_artist) {
+                const currentArtistValue = td_cell_artist.textContent.trim();
+
+                if (currentArtistValue === previousArtistValue) {
+                    // Hide duplicate artist name in the cell
+                    td_cell_artist.classList.add('hide-duplicate');
+                } else {
+                    previousArtistValue = currentArtistValue;
+                }
+
+                lastVisibleRow = tr[i];
+            }
+        }
+
+        // Step 3: Add border to the last row in each artist group
+        if (lastVisibleRow) {
+            const lastCell = lastVisibleRow.getElementsByTagName('td')[0];
+            if (lastCell) {
+                lastCell.style.borderBottom = '1px solid #333';
+            }
+        }
+    }
+
+    // Call the groupByArtist function on page load
+    groupByArtist();
 
 </script>
 {% endblock %}
