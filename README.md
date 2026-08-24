@@ -13,46 +13,38 @@ This Flask-based web interfaz provides a comprehensive media control interface f
 ## Features
 
 - **Media Playback Control**
-  - Play media files from URLs
-  - Pause/Resume
-  - Next/Previous track
-  - Volume control
-  - Mute toggle
-  - Stop playback
-  - Playlist repeat mode
+  - Play media from URLs
+  - Pause, resume, skip tracks
+  - Control volume and mute
+  - Stop playback and set repeat mode
 
 - **Bookmark Management**
-  - Add new bookmarks
-  - Edit existing bookmarks
-  - Delete bookmarks
-  - Play bookmarked URLs
+  - Create, edit, and delete bookmarks
+  - Play bookmarked content
+  - Add bookmarks to your playlist
 
 - **Radio Station Management**
-  - Add new radio stations
-  - Edit existing radio stations
-  - Delete radio stations
+  - Add, edit, and delete radio stations
   - Play radio streams
 
 - **Playlist Management**
-  - Show current playlist
+  - View current playlist
   - Remove tracks
   - Play any track
 
 - **Upload Your Music**
   - Upload media files to the server
-  - Manage uploaded tracks in playlist
+  - Manage tracks in playlist
 
 - **Play Your Local Music**
   - Browse your music library
   - Create bookmarks
-  - Explore setlists
-  - Play albums
+  - Explore setlists and play albums
 
 - **Search Albums in YTMusic**
-  - Search YTMusic catalog
+  - Search the YTMusic catalog
   - View album details
-  - Play albums
-  - Add albums to bookmarks
+  - Play and bookmark albums
 
 ## Prerequisites
 
