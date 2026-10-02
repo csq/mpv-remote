@@ -1,0 +1,9 @@
+include README.md
+include LICENSE
+recursive-include app/templates *
+recursive-include app/static *
+global-exclude __pycache__
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude .git*
+global-exclude .gitignore

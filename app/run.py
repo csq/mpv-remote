@@ -10,9 +10,9 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
 from urllib.parse import unquote
 from functools import wraps
-from app.database import Database
+from .database import Database
 
-app = Flask(__name__, template_folder=os.path.join('app','templates'), static_folder=os.path.join('app','static'))
+app = Flask(__name__, template_folder='templates', static_folder='static')
 app.secret_key = os.urandom(24)
 
 # Parse command line arguments
@@ -631,9 +631,13 @@ def clean_tmp_folder():
     except Exception as e:
         print('Failed to delete tmp folder: ' + str(e))
 
-if __name__ == '__main__':
+def main():
     args = parser.parse_args()
     database = Database()
     database.init_db()
     app.register_error_handler(404, page_not_found)
     app.run(host=args.host, port=args.port)
+
+
+if __name__ == '__main__':
+    main()
