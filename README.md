@@ -49,8 +49,6 @@ This Flask-based web interfaz provides a comprehensive media control interface f
 ## Prerequisites
 
 - <b>Python 3.9+</b>
-- <b>Flask</b>
-- <b>Ytmusicapi</b>
 - <b>MPV Media Player</b>
 
 ### Recommended
@@ -58,16 +56,38 @@ This Flask-based web interfaz provides a comprehensive media control interface f
 
 ## Installation
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/csq/mpv-remote.git
-   cd mpv-remote
-   ```
+### Option 1: Install from Wheel (Recommended)
 
-2. Install dependencies:
-    ```bash
-    pip install -r requirements.txt
-    ```
+Download the latest wheel from [Releases](https://github.com/csq/mpv-remote/releases) or build it yourself:
+
+```bash
+# Install directly from wheel
+pip install mpv_remote-1.0.0-py3-none-any.whl
+```
+
+### Option 2: Install from Source
+
+```bash
+# Clone the repository
+git clone https://github.com/csq/mpv-remote.git
+cd mpv-remote
+
+# Build and install
+pip install build
+python -m build
+pip install dist/mpv_remote-1.0.0-py3-none-any.whl
+```
+
+### Option 3: Development Install
+
+```bash
+git clone https://github.com/csq/mpv-remote.git
+cd mpv-remote
+pip install -e .
+```
+
+> **Note**: Dependencies (Flask, ytmusicapi, etc.) are automatically installed with the wheel. No manual `requirements.txt` installation needed.
+
 ## Configuration
 
 **MPV socket**:
@@ -92,23 +112,25 @@ The application supports the following command-line arguments to customize its b
 | `--music-dir` | string | None | **Local music directory path.** Allows users to search and play their music library. |
 
 ## Running app
-#### Default
+
+### Default
 
 ```bash
-python3 run.py
+mpv-remote
 ```
 * The application will start on http://localhost:5000
 
-#### Custom
+### Custom
 
 ```bash
-python3 run.py --ipc-path /tmp/mpv_skt --host 0.0.0.0 --port 5050
+mpv-remote --ipc-path /tmp/mpv_skt --host 0.0.0.0 --port 5050
 ```
 * Example for used only in trusted network
 
-#### Enable authentication and file uploads:
+### Enable authentication and file uploads:
+
 ```bash
-python app.py --auth admin:secretpassword --allow-upload
+mpv-remote --auth admin:secretpassword --allow-upload
 ```
 
 ## Project structure
@@ -118,7 +140,9 @@ mpv-remote/
 │
 ├── app/
 │   ├── __init__.py
+│   ├── __main__.py
 │   ├── database.py
+│   ├── run.py
 │   ├── static/
 │   │   ├── css/
 │   │   └── js/
@@ -127,8 +151,11 @@ mpv-remote/
 │       ├── bookmark/
 │       └── radio/
 │
-├── run.py
-└── requirements.txt
+├── pyproject.toml
+├── MANIFEST.in
+├── LICENSE
+├── README.md
+└── preview.gif
 ```
 ## Troubleshooting
 
@@ -154,7 +181,7 @@ mpv --input-ipc-server=/tmp/mpv_socket --no-video --ytdl-format=bestaudio --idle
 For **mpv-remote**, run:
 
 ```bash
-python3 run.py --host 0.0.0.0
+mpv-remote --host 0.0.0.0
 ```
 
 Enjoy your enhanced media experience!
