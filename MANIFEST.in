@@ -1,7 +1,7 @@
 include README.md
 include LICENSE
-recursive-include app/templates *
-recursive-include app/static *
+recursive-include mpv_remote/templates *
+recursive-include mpv_remote/static *
 global-exclude __pycache__
 global-exclude *.pyc
 global-exclude *.pyo

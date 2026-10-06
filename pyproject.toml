@@ -28,7 +28,7 @@ dependencies = [
 ]
 
 [project.scripts]
-mpv-remote = "app.__main__:main"
+mpv-remote = "mpv_remote.__main__:main"
 
 [project.urls]
 Homepage = "https://github.com/csq/mpv-remote"
@@ -37,10 +37,10 @@ Issues = "https://github.com/csq/mpv-remote/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["app*"]
+include = ["mpv_remote*"]
 
 [tool.setuptools.package-data]
-"app" = [
+"mpv_remote" = [
     "templates/**/*",
     "static/**/*",
 ]
