@@ -78,7 +78,6 @@ button:active {
 .btn-sm:hover {
     background-color: #333;
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
 }
 
 .btn-success {
@@ -97,7 +96,6 @@ button:active {
 .btn-danger:hover {
     background-color: #dc3545;
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
 }
 
 .btn-warning {
@@ -109,7 +107,6 @@ button:active {
 .btn-warning:hover {
     background-color: #ffc107;
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
 }
 
 .btn.primary {
@@ -120,7 +117,6 @@ button:active {
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
 }
 
 .btn-secondary {
@@ -132,7 +128,6 @@ button:active {
 .btn-secondary:hover {
     background-color: slateblue;
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
 }
 
 .modal {

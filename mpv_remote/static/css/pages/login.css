@@ -104,7 +104,6 @@ body {
 .submit-btn:hover {
     background-color: #4d2354;
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
 }
 
 .submit-btn:active {

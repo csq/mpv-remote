@@ -68,7 +68,6 @@ table td {
 #btn-play:hover {
     background-color: #333;
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
 }
 
 #btn-bookmark {
@@ -85,7 +84,6 @@ table td {
 #btn-bookmark:hover {
     background-color: green;
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
 }
 
 #btn-play:active {
@@ -106,7 +104,6 @@ table td {
 #btn-playlist:hover {
     background-color: blueviolet;
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
 }
 
 #playlistButton {
@@ -134,7 +131,6 @@ table td {
 #btn-add-playlist:hover {
     background-color: slateblue;
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
 }
 
 .text-ellipsis {
