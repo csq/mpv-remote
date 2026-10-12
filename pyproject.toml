@@ -28,7 +28,7 @@ dependencies = [
 ]
 
 [project.scripts]
-mpv-remote = "mpv_remote.__main__:main"
+mpv-remote = "mpv_remote:main"
 
 [project.urls]
 Homepage = "https://github.com/csq/mpv-remote"
