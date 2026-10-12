@@ -198,12 +198,15 @@ def control(action):
 
     elif action == 'stop':
         command = { "command": ["stop"] }
-        clean_tmp_folder()
 
     elif action == 'repeat':
         command = { "command": ["cycle-values", "loop-playlist", "inf", "no"] }
 
     send_mpv_command(ipc_path, command)
+
+    if action == 'stop':
+      clean_tmp_folder()
+
     return jsonify({'message': f'Action {action} executed'})
 
 @app.route('/search', methods=['GET', 'POST'])
@@ -621,15 +624,12 @@ def allowed_file_extension(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def clean_tmp_folder():
-    try:
-        for filename in os.listdir(UPLOAD_FOLDER):
-            file_path = os.path.join(UPLOAD_FOLDER, filename)
-
-            if os.path.isfile(file_path) or os.path.islink(file_path):
-                os.unlink(file_path)
-
-    except Exception as e:
-        print('Failed to delete tmp folder: ' + str(e))
+    if os.path.exists(UPLOAD_FOLDER):
+        try:
+            import shutil
+            shutil.rmtree(UPLOAD_FOLDER)
+        except Exception as e:
+            print(f'Failed to delete tmp folder: {e}')
 
 def main():
     args = parser.parse_args()
