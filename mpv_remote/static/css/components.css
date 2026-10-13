@@ -19,6 +19,7 @@ button {
 }
 
 button:hover {
+    color: #ffffff;
     background-color: #555555;
 }
 
