@@ -1,0 +1,187 @@
+/* ==========================================================================
+   LIST-PAGES.CSS - Shared Styles for Table/List Pages
+   Used by: music, ytmusic, bookmark, radio
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Table Base Styles
+   -------------------------------------------------------------------------- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    align-content: center;
+}
+
+table th {
+    background-color: #333;
+    color: #ffffff;
+    padding: 10px;
+    border: 1px solid #333;
+    border-bottom: 1px solid #333;
+    text-overflow: ellipsis;
+}
+
+table td {
+    padding: auto;
+    border: 1px solid #333;
+    text-overflow: ellipsis;
+}
+
+/* --------------------------------------------------------------------------
+   Controls Container
+   -------------------------------------------------------------------------- */
+.controls-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.controls-container button {
+    flex-shrink: 0;
+    white-space: nowrap;
+    margin-left: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Search Input
+   -------------------------------------------------------------------------- */
+.search-input {
+    margin-top: 10px;
+    width: 50%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #333;
+    background-color: #333;
+    text-align: center;
+    color: #ffffff;
+    outline: none;
+}
+
+.search-input::placeholder {
+    color: #cccccc;
+    font-size: 14px;
+}
+
+.search-input:focus {
+    border-color: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   Back Button
+   -------------------------------------------------------------------------- */
+.btn-back {
+    margin-left: inherit;
+}
+
+/* --------------------------------------------------------------------------
+   Success Button (Add Bookmark/Radio)
+   -------------------------------------------------------------------------- */
+.btn-success {
+    margin-right: inherit;
+}
+
+/* --------------------------------------------------------------------------
+   Bookmark/Radio Item Container
+   -------------------------------------------------------------------------- */
+.bookmark-item,
+.radio-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --------------------------------------------------------------------------
+   Text Ellipsis Utility
+   -------------------------------------------------------------------------- */
+.text-ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* --------------------------------------------------------------------------
+   Artist Cell (for grouping duplicate artists)
+   -------------------------------------------------------------------------- */
+.artist-cell {
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-bottom: none;
+}
+
+/* --------------------------------------------------------------------------
+   Hide Duplicate Artist Names
+   -------------------------------------------------------------------------- */
+.hide-duplicate {
+    visibility: hidden;
+    border: none;
+    border-left: 1px solid #333;
+}
+
+/* --------------------------------------------------------------------------
+   Scrollable List (for modals)
+   -------------------------------------------------------------------------- */
+.scrollable-list {
+    max-height: 40vh;
+    overflow-y: auto;
+    text-align: left;
+    padding: 0 20px;
+    line-height: 1.5;
+}
+
+/* --------------------------------------------------------------------------
+   Mobile Responsive - Table/List Pages
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+    .search-input {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .btn-back {
+        margin-bottom: 5px;
+    }
+
+    .stream-url,
+    .stream-path {
+        display: none;
+    }
+
+    .music-item .btn,
+    .bookmark-item .btn,
+    .radio-item .btn {
+        size-adjust: auto;
+    }
+
+    .controls-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
+        gap: 10px;
+    }
+
+    .btn-back {
+        grid-column: 1;
+        grid-row: 1;
+        margin-bottom: 0px;
+    }
+
+    .btn-success {
+        margin-bottom: 0px;
+    }
+
+    .search-input {
+        grid-column: 1 / 3;
+        grid-row: 2;
+        max-width: 94%;
+        width: 100%;
+        margin-bottom: auto;
+    }
+
+    .btn {
+        grid-column: 2;
+        grid-row: 1;
+    }
+}

@@ -1,3 +1,13 @@
+/* ==========================================================================
+   INDEX.CSS - Home Page Specific Styles
+   Imports: components.css (buttons, modals, dropdowns), list-pages.css (table, dropdown mobile)
+   ========================================================================== */
+@import url('../components.css');
+@import url('./list-pages.css');
+
+/* --------------------------------------------------------------------------
+   URL Form Container
+   -------------------------------------------------------------------------- */
 #url-form-container {
     align-items: center;
     margin-top: 10%;
@@ -13,7 +23,8 @@ h1 {
     margin-bottom: 20px;
 }
 
-input[type="url"] {
+/* URL Input - page specific */
+#urlInput {
     width: 90%;
     max-width: 400px;
     padding: 10px;
@@ -26,27 +37,15 @@ input[type="url"] {
     border-radius: 5px;
 }
 
-input[type="url"]::placeholder {
+#urlInput::placeholder {
     color: #cccccc;
 }
 
-input[type="url"]:focus {
+#urlInput:focus {
     border-color: #ffffff;
 }
 
-button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 10px;
-    color: #ffffff;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-button:active {
-    transform: translateY(2px);
-}
-
+/* Submit Button - page specific */
 #btn-submit {
     background-color: #ff5722;
     color: #ffffff;
@@ -58,24 +57,17 @@ button:active {
     transition: background-color 0.3s;
 }
 
-#control-buttons {
-    margin-top: 50px;
-    color: #ffffff;
-    font-size: 16px;
-}
-
+/* Control Buttons - page specific styling */
 #control-buttons button {
     margin-right: 10px;
     color: #1e1e1e;
     background-color: #ffffff;
     padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
     border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s ease-in-out;
     border: none;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease-in-out;
     margin-bottom: 10px;
 }
 
@@ -103,6 +95,7 @@ button:active {
     margin-top: 10px;
 }
 
+/* Playlist Table - page specific */
 #playlist {
     display: none;
     align-items: center;
@@ -150,65 +143,7 @@ button:active {
     font-weight: bold;
 }
 
-.action-cell {
-    position: relative;
-    white-space: nowrap;
-}
-
-/* Desktop view: show buttons */
-.buttons-desktop {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-}
-
-.btn-menu-toggle {
-    display: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 18px;
-    padding: 6px 8px;
-}
-
-/* Dropdown menu (hidden by default) */
-.action-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    z-index: 100;
-}
-
-.action-menu.active {
-    display: flex;
-    flex-direction: column;
-    background-color: #f0f0f0;
-}
-
-.menu-item {
-    color: #333;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    text-align: left;
-    font-size: 14px;
-    transition: background-color 0.2s;
-    background-color: #f0f0f0;
-}
-
-.menu-item:active {
-    background-color: #ccc;
-}
-
-/* Mobile view: hide buttons, show menu toggle */
+/* Mobile - index specific */
 @media (max-width: 768px) {
     #url-form-container {
         margin-top: 40%;
@@ -218,16 +153,8 @@ button:active {
         display: none;
     }
 
-    .buttons-desktop {
-        display: none;
-    }
-
-    .btn-menu-toggle {
-        display: inline-block;
-    }
-
     .row {
-        width: 75%;
+        width: 68%;
     }
 }
 

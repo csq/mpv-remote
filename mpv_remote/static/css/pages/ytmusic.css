@@ -1,24 +1,12 @@
-table {
-    width: 100%;
-    border-collapse: collapse;
-    align-content: center;
-}
+/* ==========================================================================
+   YTMUSIC.CSS - YTMusic Search Page Specific Styles
+   Imports: list-pages.css (shared table/list styles)
+   ========================================================================== */
+@import url('./list-pages.css');
 
-table th {
-    background-color: #333;
-    color: #ffffff;
-    padding: 10px;
-    border: 1px solid #333;
-    border-bottom: 1px solid #333;
-    text-overflow: ellipsis;
-}
-
-table td {
-    padding: auto;
-    border: 1px solid #333;
-    text-overflow: ellipsis;
-}
-
+/* --------------------------------------------------------------------------
+   YTMusic Specific Styles
+   -------------------------------------------------------------------------- */
 .controls-container {
     display: flex;
     align-items: center;
@@ -67,6 +55,7 @@ table td {
     margin-top: 20px;
 }
 
+/* Button styles (same as music but keep for specificity) */
 #btn-play {
     background-color: #333;
     color: #ffffff;
@@ -147,91 +136,14 @@ table td {
     transform: translateY(-2px);
 }
 
-.artist-cell {
-    font-weight: bold;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    border-bottom: none;
-}
-
-.hide-duplicate {
-  visibility: hidden;
-  border: none;
-  border-left: 1px solid #333;
-}
-
-.text-ellipsis {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
+/* --------------------------------------------------------------------------
+   YTMusic Specific Overrides
+   -------------------------------------------------------------------------- */
 .scrollable-list {
     max-height: 40vh;
-    overflow-y: auto;
-    text-align: left;
-    padding: 0 20px;
-    line-height: 1.5;
 }
 
-.action-cell {
-    position: relative;
-    white-space: nowrap;
-}
-
-/* Desktop view: show buttons */
-.buttons-desktop {
-    display: flex;
-    justify-content: center;
-}
-
-.btn-menu-toggle {
-    display: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 18px;
-    padding: 6px 8px;
-}
-
-/* Dropdown menu (hidden by default) */
-.action-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    z-index: 100;
-}
-
-.action-menu.active {
-    display: flex;
-    flex-direction: column;
-    background-color: #f0f0f0;
-}
-
-.menu-item {
-    color: #333;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    text-align: left;
-    font-size: 14px;
-    transition: background-color 0.2s;
-    background-color: #f0f0f0;
-}
-
-.menu-item:active {
-    background-color: #ccc;
-}
-
-/* Tablet & smaller screens */
+/* Mobile - ytmusic specific */
 @media (max-width: 768px) {
     #searchForm {
         width: 80%;
@@ -244,13 +156,5 @@ table td {
         text-overflow: ellipsis;
         max-width: 90px;
         width: auto;
-    }
-
-    .buttons-desktop {
-        display: none;
-    }
-
-    .btn-menu-toggle {
-        display: inline-block;
     }
 }

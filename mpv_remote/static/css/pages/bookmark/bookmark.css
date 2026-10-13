@@ -1,171 +1,27 @@
+/* ==========================================================================
+   BOOKMARK.CSS - Bookmarks Page Specific Styles
+   Imports: list-pages.css (shared table/list styles)
+   ========================================================================== */
+@import url('../list-pages.css');
+
+/* --------------------------------------------------------------------------
+   Bookmark Specific Overrides
+   -------------------------------------------------------------------------- */
 table {
-    width: 100%;
-    border-collapse: collapse;
     margin-top: 20px;
-    align-content: center;
-}
-
-table th {
-    background-color: #333;
-    color: #ffffff;
-    padding: 10px;
-    border: 1px solid #333;
-    border-bottom: 1px solid #333;
-    text-overflow: ellipsis;
-}
-
-table td {
-    padding: auto;
-    border: 1px solid #333;
-    text-overflow: ellipsis;
-}
-
-.controls-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
 }
 
 .search-input {
-    margin-top: 10px;
-    width: 50%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #333;
     margin-top: inherit;
-    background-color: #333;
-    text-align: center;
-    color: #ffffff;
-    outline: none;
 }
 
-.search-input::placeholder {
-    color: #cccccc;
-    font-size: 14px;
-}
-
-.search-input:focus {
-    border-color: #ffffff;
-}
-
-.btn-back {
-  margin-left: inherit;
-}
-
-.btn-success {
-    margin-right: inherit;
-}
-
-.bookmark-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.action-cell {
-    position: relative;
-    white-space: nowrap;
-}
-
-/* Desktop view: show buttons */
-.buttons-desktop {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-}
-
-.btn-menu-toggle {
-    display: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 18px;
-    padding: 6px 8px;
-}
-
-/* Dropdown menu (hidden by default) */
-.action-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    z-index: 100;
-}
-
-.action-menu.active {
-    display: flex;
-    flex-direction: column;
-    background-color: #f0f0f0;
-}
-
-.menu-item {
-    color: #333;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    text-align: left;
-    font-size: 14px;
-    transition: background-color 0.2s;
-    background-color: #f0f0f0;
-}
-
-.menu-item:active {
-    background-color: #ccc;
-}
-
+/* Mobile - bookmark specific overrides */
 @media (max-width: 768px) {
-    .controls-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: auto auto;
-        gap: 10px;
-    }
-
-    .btn-back {
-        grid-column: 1;
-        grid-row: 1;
-        margin-bottom: 0px;
-    }
-
-    .btn-success {
-        margin-bottom: 0px;
-    }
-
-    .search-input {
-        grid-column: 1 / 3;
-        grid-row: 2;
-        max-width: 94%;
-        width: 100%;
-        margin-bottom: auto;
-    }
-
-    .btn {
-        grid-column: 2;
-        grid-row: 1;
-    }
-
     .stream-url {
         display: none;
     }
 
     .bookmark-item .btn {
         size-adjust: auto;
-    }
-
-    .buttons-desktop {
-        display: none;
-    }
-
-    .btn-menu-toggle {
-        display: inline-block;
     }
 }

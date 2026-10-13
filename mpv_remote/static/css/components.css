@@ -1,0 +1,320 @@
+/* ==========================================================================
+   COMPONENTS.CSS - Shared UI Components
+   Consolidated from base.css and index.css
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Buttons
+   -------------------------------------------------------------------------- */
+button {
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #333333;
+    color: #ffffff;
+    border: none;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #555555;
+}
+
+button:active {
+    background-color: #777777;
+    transform: translateY(2px);
+}
+
+.btn {
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-sm {
+    border-radius: 10px;
+    border: none;
+    padding: 5px 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+    font-size: 14px;
+}
+
+.btn-sm:hover {
+    background-color: #333;
+    transform: translateY(-2px);
+}
+
+.btn-success {
+    background-color: #28a745;
+    color: #fff;
+    border-color: #28a745;
+    padding: 10px 15px;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+    border-color: #dc3545;
+}
+
+.btn-danger:hover {
+    background-color: #dc3545;
+    transform: translateY(-2px);
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    color: #fff;
+    border-color: #ffc107;
+}
+
+.btn-warning:hover {
+    background-color: #ffc107;
+    transform: translateY(-2px);
+}
+
+.btn-primary {
+    background-color: #333;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: slateblue;
+    color: #fff;
+    border-color: slateblue;
+}
+
+.btn-secondary:hover {
+    background-color: slateblue;
+    transform: translateY(-2px);
+}
+
+/* --------------------------------------------------------------------------
+   Form Inputs
+   -------------------------------------------------------------------------- */
+input[type="url"],
+input[type="text"],
+input[type="string"],
+.form-input,
+.search-input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #333;
+    background-color: #333;
+    color: #ffffff;
+    outline: none;
+}
+
+input[type="url"]::placeholder,
+input[type="text"]::placeholder,
+.form-input::placeholder,
+.search-input::placeholder {
+    color: #cccccc;
+}
+
+input[type="url"]:focus,
+input[type="text"]:focus,
+.form-input:focus,
+.search-input:focus {
+    border-color: #ffffff;
+}
+
+.form-input {
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #97889a;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.submit-btn {
+    padding: 12px 20px;
+    background-color: #4d2354;
+    color: #ffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.submit-btn:hover {
+    background-color: #4d2354;
+    transform: translateY(-2px);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+/* --------------------------------------------------------------------------
+   Modal
+   -------------------------------------------------------------------------- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal.is-visible {
+    opacity: 1;
+    visibility: visible;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 2%;
+}
+
+.modal-content {
+    background-color: #333333;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    max-height: fit-content;
+    width: 90%;
+    position: relative;
+    transform: scale(0.7);
+    opacity: 0;
+    transition: all 0.3s ease;
+    overflow-wrap: break-word;
+    padding: 20px;
+    color: #ffffff;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: medium;
+}
+
+.modal.is-visible .modal-content {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 24px;
+    color: #888;
+    transition: color 0.2s ease;
+}
+
+.modal-close:hover {
+    color: #000;
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        max-width: 70%;
+        padding: fit-content;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Dropdown Menu System (Action Menu)
+   -------------------------------------------------------------------------- */
+.action-cell {
+    position: relative;
+    white-space: nowrap;
+}
+
+/* Desktop view: show buttons */
+.buttons-desktop {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.btn-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 6px 8px;
+}
+
+/* Dropdown menu (hidden by default) */
+.action-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+}
+
+.action-menu.active {
+    display: flex;
+    flex-direction: column;
+    background-color: #f0f0f0;
+}
+
+.menu-item {
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-size: 14px;
+    transition: background-color 0.2s;
+    background-color: #f0f0f0;
+}
+
+/* Mobile view: hide buttons, show menu toggle */
+@media (max-width: 768px) {
+    .buttons-desktop {
+        display: none;
+    }
+
+    .btn-menu-toggle {
+        display: inline-block;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Error Messages
+   -------------------------------------------------------------------------- */
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.error-text {
+    flex: 1;
+}
