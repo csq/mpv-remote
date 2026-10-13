@@ -102,7 +102,6 @@
 }
 
 .search-input {
-    width: 30%;
     margin-bottom: 10px;
     margin-top: 10px;
 }
@@ -114,20 +113,7 @@
 
 /* Mobile - music specific */
 @media (max-width: 768px) {
-    .search-input {
-        margin-top: 10px;
-        width: 100%;
-    }
-
-    .btn-back {
-        margin-bottom: 5px;
-    }
-
     .stream-path {
         display: none;
-    }
-
-    .music-item .btn {
-        size-adjust: auto;
     }
 }

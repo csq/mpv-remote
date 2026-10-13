@@ -98,36 +98,134 @@ button:active {
     transform: translateY(-2px);
 }
 
+/* Button variants used as classes (not IDs) */
+.btn-add-playlist {
+    background-color: slateblue;
+    color: #fff;
+    border-color: slateblue;
+    padding: 5px 5px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+    font-size: 14px;
+}
+
+.btn-add-playlist:hover {
+    background-color: slateblue;
+    transform: translateY(-2px);
+}
+
+.btn-bookmark {
+    background-color: green;
+    color: #fff;
+    border-color: green;
+    padding: 5px 5px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+    font-size: 14px;
+}
+
+.btn-bookmark:hover {
+    background-color: green;
+    transform: translateY(-2px);
+}
+
+.btn-delete {
+    background-color: #dc3545;
+    color: #fff;
+    border-color: #dc3545;
+    padding: 5px 5px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+    font-size: 14px;
+}
+
+.btn-delete:hover {
+    background-color: #dc3545;
+    transform: translateY(-2px);
+}
+
+.btn-edit {
+    background-color: #ffc107;
+    color: #fff;
+    border-color: #ffc107;
+    padding: 5px 5px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+    font-size: 14px;
+}
+
+.btn-edit:hover {
+    background-color: #ffc107;
+    transform: translateY(-2px);
+}
+
+.btn-play {
+    background-color: #333;
+    color: #fff;
+    border-color: #333;
+    padding: 5px 5px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+    font-size: 14px;
+}
+
+.btn-play:hover {
+    background-color: #333;
+    transform: translateY(-2px);
+}
+
+.btn-playlist {
+    background-color: blueviolet;
+    color: #fff;
+    border-color: blueviolet;
+    padding: 5px 5px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+    font-size: 14px;
+}
+
+.btn-playlist:hover {
+    background-color: blueviolet;
+    transform: translateY(-2px);
+}
+
+/* FontAwesome icon wrapper */
+.icon {
+    display: inline-block;
+}
+
+/* Table cells */
+.stream-name {
+    /* inherits from td */
+}
+
+.stream-url {
+    /* inherits from td; mobile hidden in list-pages.css */
+}
+
 /* --------------------------------------------------------------------------
    Form Inputs
    -------------------------------------------------------------------------- */
-input[type="url"],
-input[type="text"],
-input[type="string"],
-.form-input,
-.search-input {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #333;
-    background-color: #333;
-    color: #ffffff;
-    outline: none;
-}
 
-input[type="url"]::placeholder,
-input[type="text"]::placeholder,
-.form-input::placeholder,
-.search-input::placeholder {
-    color: #cccccc;
-}
-
-input[type="url"]:focus,
-input[type="text"]:focus,
-.form-input:focus,
-.search-input:focus {
-    border-color: #ffffff;
-}
-
+/* .form-input - login page specific (different border style) */
 .form-input {
     padding: 12px 15px;
     border: 2px solid #e0e0e0;
@@ -135,12 +233,63 @@ input[type="text"]:focus,
     font-size: 16px;
     transition: all 0.3s ease;
     font-family: inherit;
+    background-color: #333;
+    color: #ffffff;
+    outline: none;
+}
+
+.form-input::placeholder {
+    color: #cccccc;
 }
 
 .form-input:focus {
     outline: none;
     border-color: #97889a;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* .search-input - list pages (music, ytmusic, bookmark, radio) */
+.search-input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #333;
+    background-color: #333;
+    color: #ffffff;
+    outline: none;
+    width: 50%;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.search-input::placeholder {
+    color: #cccccc;
+    font-size: 14px;
+}
+
+.search-input:focus {
+    border-color: #ffffff;
+}
+
+/* Element selector fallbacks for inputs without classes */
+input[type="url"],
+input[type="text"],
+input[type="string"] {
+    background-color: #333;
+    color: #ffffff;
+    outline: none;
+    border: 1px solid #333;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+input[type="url"]::placeholder,
+input[type="text"]::placeholder {
+    color: #cccccc;
+}
+
+input[type="url"]:focus,
+input[type="text"]:focus {
+    border-color: #ffffff;
 }
 
 .submit-btn {

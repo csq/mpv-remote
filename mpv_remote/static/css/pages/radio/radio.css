@@ -15,16 +15,8 @@ table {
     margin-top: inherit;
 }
 
-/* Mobile - radio specific */
+/* Mobile - radio specific column widths */
 @media (max-width: 768px) {
-    .stream-url {
-        display: none;
-    }
-
-    .radio-item .btn {
-        size-adjust: auto;
-    }
-
     /* Make the first column 90% width */
     table th:first-child,
     table td:first-child {

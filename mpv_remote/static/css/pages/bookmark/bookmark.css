@@ -14,14 +14,3 @@ table {
 .search-input {
     margin-top: inherit;
 }
-
-/* Mobile - bookmark specific overrides */
-@media (max-width: 768px) {
-    .stream-url {
-        display: none;
-    }
-
-    .bookmark-item .btn {
-        size-adjust: auto;
-    }
-}
