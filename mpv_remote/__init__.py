@@ -214,26 +214,27 @@ def control(action):
 def search_ytmusic():
     from ytmusicapi import YTMusic
 
-    if request.method == 'GET':
-        return render_template('ytmusic.html')
+    search_query = request.form.get('search', '') if request.method == 'POST' else ''
+    sorted_results = None
 
-    search_query = request.form['search']
-    ytmusic = YTMusic()
+    if search_query.strip():
+        ytmusic = YTMusic()
+        results = ytmusic.search(
+            search_query,
+            filter="albums",
+            ignore_spelling=True
+        )
 
-    results = ytmusic.search(
-        search_query, filter="albums", ignore_spelling=True
-    )
+        # Sort by artist name and year
+        sorted_results = sorted(
+            results,
+            key=lambda x: (
+                x['artists'][0]['name'] if x.get('artists') else '',
+                x.get('year', 0)
+            )
+        )
 
-    # Sort by artist name and year
-    sorted_results = sorted(
-         results,
-         key=lambda x: (
-             x['artists'][0]['name'] if x.get('artists') else '',
-             x.get('year', 0)
-         )
-    )
-
-    return render_template('ytmusic.html', data=sorted_results)
+    return render_template('ytmusic.html', query=search_query, data=sorted_results)
 
 @app.route('/ytmusic/play/<string:playlistId>', methods=['POST'])
 @login_required
