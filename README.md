@@ -55,6 +55,7 @@ This Flask-based web interfaz provides a comprehensive media control interface f
 - <b>yt-dlp</b>
 
 ## Installation
+**Note**`: <ver>` in the file names is the version number.
 
 ### Option 1: Install from Wheel (Recommended)
 
@@ -62,7 +63,7 @@ Download the latest wheel from [Releases](https://github.com/csq/mpv-remote/rele
 
 ```bash
 # Install directly from wheel
-pip install mpv_remote-1.0.0-py3-none-any.whl
+pip install mpv_remote-<ver>-py3-none-any.whl
 ```
 
 ### Option 2: Install from Source
@@ -75,7 +76,7 @@ cd mpv-remote
 # Build and install
 pip install build
 python -m build
-pip install dist/mpv_remote-1.0.0-py3-none-any.whl
+pip install dist/mpv_remote-<ver>-py3-none-any.whl
 ```
 
 ### Option 3: Development Install
