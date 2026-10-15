@@ -138,18 +138,43 @@ mpv-remote --auth admin:secretpassword --allow-upload
 ```bash
 mpv-remote/
 │
-├── app/
+├── mpv_remote/
 │   ├── __init__.py
 │   ├── __main__.py
 │   ├── database.py
-│   ├── run.py
 │   ├── static/
 │   │   ├── css/
-│   │   └── js/
+│   │   │   ├── components.css
+│   │   │   ├── base.css
+│   │   │   └── pages/
+│   │   │       ├── index.css
+│   │   │       ├── music.css
+│   │   │       ├── login.css
+│   │   │       ├── form-pages.css
+│   │   │       ├── list-pages.css
+│   │   │       ├── ytmusic.css
+│   │   │       ├── bookmark/
+│   │   │       │   ├── bookmark.css
+│   │   │       │   └── bookmark_form.css
+│   │   │       └── radio/
+│   │   │           ├── radio.css
+│   │   │           └── radio_form.css
+│   │   └── fontawesome/
+│   │       ├── css/
+│   │       ├── js/
+│   │       └── webfonts/
 │   └── templates/
+│       ├── base.html
 │       ├── index.html
+│       ├── login.html
+│       ├── music.html
+│       ├── ytmusic.html
 │       ├── bookmark/
+│       │   ├── bookmark.html
+│       │   └── bookmark_form.html
 │       └── radio/
+│           ├── radio.html
+│           └── radio_form.html
 │
 ├── pyproject.toml
 ├── MANIFEST.in
