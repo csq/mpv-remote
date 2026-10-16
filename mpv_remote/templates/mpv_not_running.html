@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}<title>MPV Remote - MPV Not Running</title>{% endblock %}
+{% block head_content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/pages/index.css') }}">
+<style>
+    .mpv-status {
+        margin-top: 10%;
+        padding: 24px;
+        border: 1px solid #ff5722;
+        border-radius: 8px;
+        background-color: #1e1e1e;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .mpv-status i { font-size: 32px; color: #ff5722; margin-bottom: 12px; }
+    .mpv-status p { margin: 8px 0; color: #ffffff; }
+    .mpv-status code { background-color: #333; padding: 4px 8px; border-radius: 4px; }
+    .mpv-status button { margin-top: 16px; }
+</style>
+{% endblock %}
+{% block body_content %}
+<div id="url-form-container">
+    <div class="mpv-status">
+        <i class="fas fa-exclamation-triangle"></i>
+        <p><strong>MPV is not running or not reachable.</strong></p>
+        <p>Error sending command to MPV: {{ error }}</p>
+        <p>The web interface could not connect to the MPV player socket at <code>{{ ipc_path }}</code>.</p>
+        <p>Start MPV with: <code>mpv --input-ipc-server={{ ipc_path }} --idle</code></p>
+        <button onclick="window.location.reload()">Retry</button>
+    </div>
+</div>
+{% endblock %}

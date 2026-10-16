@@ -29,6 +29,25 @@ args = parser.parse_args()
 
 ipc_path = args.ipc_path
 
+class MpvConnectionError(ConnectionRefusedError):
+    pass
+
+def mpv_available():
+    try:
+        with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as s:
+            s.settimeout(0.5)
+            s.connect(ipc_path)
+        return True
+    except OSError:
+        return False
+
+@app.before_request
+def require_mpv_available():
+    if request.path.startswith('/static/') or request.path == '/favicon.ico' or request.path.startswith('/login'):
+        return
+    if not mpv_available():
+        raise MpvConnectionError(111, 'Connection refused')
+
 UPLOAD_FOLDER = os.path.join(tempfile.gettempdir(), 'mpv-remote', 'uploads')
 ALLOWED_EXTENSIONS = {'mp3', 'wma', 'flac', 'wav', 'ogg', 'aac', 'ape', 'alac', 'aiff'}
 
@@ -611,9 +630,22 @@ def send_mpv_command(ipc_path, command):
 
             response = data.decode('utf-8').strip()
             return response
-    except (socket.error, IOError) as e:
+    except (socket.error, IOError, OSError) as e:
         print(f"Error sending command to MPV: {e}")
-        raise
+        raise MpvConnectionError(str(e))
+
+@app.errorhandler(MpvConnectionError)
+@app.errorhandler(ConnectionRefusedError)
+@app.errorhandler(FileNotFoundError)
+@app.errorhandler(OSError)
+def mpv_connection_error(error):
+    message = str(error)
+    if request.path.startswith('/media-info') or request.path.startswith('/music/playlist') or request.path.startswith('/playlist'):
+        return jsonify({'status': 'error', 'message': f'Error sending command to MPV: {message}'}), 503
+    if request.method == 'GET':
+        return render_template('mpv_not_running.html', ipc_path=ipc_path, error=message), 200
+    return jsonify({'status': 'error', 'message': f'Error sending command to MPV: {message}'}), 503
+
 
 def get_volume():
     command = { "command": ["get_property", "volume"] }
