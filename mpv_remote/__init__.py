@@ -234,26 +234,56 @@ def search_ytmusic():
     from ytmusicapi import YTMusic
 
     search_query = request.form.get('search', '') if request.method == 'POST' else ''
+    search_filter = request.form.get('filter', 'artists') if request.method == 'POST' else 'artists'
+    if search_filter not in ('albums', 'artists'):
+        search_filter = 'artists'
     sorted_results = None
 
     if search_query.strip():
         ytmusic = YTMusic()
-        results = ytmusic.search(
-            search_query,
-            filter="albums",
-            ignore_spelling=True
-        )
+        if search_filter == 'albums':
+            results = ytmusic.search(
+                search_query,
+                filter="albums",
+                ignore_spelling=True
+            )
+        else:
+            artist_results = ytmusic.search(
+                search_query,
+                filter="artists",
+                ignore_spelling=True
+            )
+            results = []
+            for artist in artist_results:
+                artist_name = artist.get('artist') or artist.get('name') or ''
+                channel_id = artist.get('browseId')
+                if not channel_id:
+                    continue
+                try:
+                    artist_data = ytmusic.get_artist(channel_id)
+                except Exception:
+                    continue
+                album_section = artist_data.get('albums') or {}
+                album_list = album_section.get('results', []) if isinstance(album_section, dict) else []
+                for album in album_list:
+                    results.append({
+                        'artists': [{'name': artist_name}],
+                        'browseId': album.get('browseId'),
+                        'playlistId': album.get('audioPlaylistId') or album.get('playlistId'),
+                        'title': album.get('title'),
+                        'year': album.get('type') or album.get('year') or '',
+                    })
 
         # Sort by artist name and year
         sorted_results = sorted(
             results,
             key=lambda x: (
                 x['artists'][0]['name'] if x.get('artists') else '',
-                x.get('year', 0)
+                str(x.get('year', ''))
             )
         )
 
-    return render_template('ytmusic.html', query=search_query, data=sorted_results)
+    return render_template('ytmusic.html', query=search_query, data=sorted_results, filter=search_filter)
 
 @app.route('/ytmusic/play/<string:playlistId>', methods=['POST'])
 @login_required

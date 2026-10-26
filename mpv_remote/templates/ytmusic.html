@@ -12,7 +12,13 @@
 <div class="controls-container">
     <button onclick="go_to_back()"><i class="icon fas fa-angle-left"></i>Back</button>
     <form id="searchForm" action="/search" method="POST">
-        <input type="text" id="searchInput" name="search" value="{{ query }}" placeholder="Search by artist or album" required>
+        <div id="searchWrapper">
+            <input type="text" id="searchInput" name="search" value="{{ query }}" placeholder="Search by artist or album" required>
+            <select id="searchFilter" name="filter">
+                <option value="artists" {% if filter == 'artists' %}selected{% endif %}>Artists</option>
+                <option value="albums" {% if filter == 'albums' %}selected{% endif %}>Albums</option>
+            </select>
+        </div>
     </form>
 </div>
 <div id="search-results"></div>
