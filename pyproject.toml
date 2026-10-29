@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mpv-remote"
-version = "1.0.0"
+version = "0.1.0"
 description = "Flask-based web interface for controlling MPV media player"
 readme = "README.md"
 license = "MIT"
